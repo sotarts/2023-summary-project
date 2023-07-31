@@ -1,2 +1,10 @@
 # 2023-summary-project
-Template repository for 2023 JC1 Summary Project
+
+## Members
+
+- Member 1
+- Member 2
+- Member 3
+- Member 4
+
+<Description of your project>
