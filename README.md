@@ -2,9 +2,9 @@
 
 ## Members
 
-- Member 1
-- Member 2
-- Member 3
+- isaac
+- wan qi
+- Tran
 - Lim Hong Zhao
 
 <Description of your project>
