@@ -3,7 +3,7 @@
 ## Members
 
 - Isaac Jonathan Foo
-- Member 2
+- Member Tran
 - Member 3
 - Member 4 Tan Wan Qi
 
