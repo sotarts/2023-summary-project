@@ -2,9 +2,10 @@
 
 ## Members
 
-- Member 1
+- Isaac Jonathan Foo
 - Member 2
-- Member 3
 - Lim Hong Zhao
+- Tan Wan Qi
+
 
 <Description of your project>
