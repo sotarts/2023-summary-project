@@ -3,8 +3,8 @@
 ## Members
 
 - Isaac Jonathan Foo
-- Tran Huy Thai
-- Lim Hong Zhao
-- Tan Wan Qi
+- Member 2
+- Member 3
+- Member 4
 
 <Description of your project>
