@@ -2,7 +2,7 @@
 
 ## Members
 
-- Member 1
+- Isaac Jonathan Foo
 - Member 2
 - Member 3
 - Member 4
