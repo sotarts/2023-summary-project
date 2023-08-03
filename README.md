@@ -2,9 +2,9 @@
 
 ## Members
 
-- Member 1
-- Member 2
-- Member 3
-- Member 4
+- Isaac Jonathan Foo
+- Tran Huy Thai
+- Lim Hong Zhao
+- Tan Wan Qi
 
 <Description of your project>
