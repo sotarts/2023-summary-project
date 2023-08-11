@@ -36,11 +36,6 @@
         "name": "Cat",
         "description": "This is the Ultimate Monster's precious cat!",
         "usage": "Prompts the ultimate monster to show up."
-    },
-    {
-      "name": "Cybernetic Implant",
-      "description": "A neural implant that grants access to hidden interfaces.",
-      "usage": "Accessing secure systems."
     }
   ],
   "health_items": [

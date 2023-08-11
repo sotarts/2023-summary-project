@@ -3,27 +3,27 @@
     {
       "id": 1,
       "name": "Overgrown Shuttle Courts",
-      "description": "Stepping outside, you find yourself in a courtyard swallowed by nature. Tall grasses and vines obscure the cracked pavement. The skeletal remains of a swing set creak in the breeze. A sense of desolation hangs in the air."
+      "description": "Stepping outside, you find yourself in the overgrown shuttle courts swallowed by nature. Tall grasses and vines obscure the cracked pavement. The skeletal remains of the basketball hoop creak in the breeze. A sense of desolation hangs in the air."
     },
     {
       "id": 2,
       "name": "Ransacked Canteen",
-      "description": "You enter what used to be the cafeteria, now a scene of chaos. Tables and chairs are overturned, and the floor is littered with discarded wrappers and cans. A faint odor of spoiled food lingers."
+      "description": "You enter what used to be the canteen, now a scene of chaos. Tables and chairs are overturned, and the floor is littered with discarded wrappers and cans. A faint odor of spoiled food lingers."
     },
     {
       "id": 3,
       "name": "Ruined Concoursed",
-      "description": "You stand in a decaying classroom, its walls covered in graffiti and broken glass. Desks are overturned, and tattered textbooks lie scattered on the floor. The scent of dampness and decay fills the air."
+      "description": "A You stand amidst the crumbling pillars and shattered glass, the school's once vibrant concourse now lies in ruins. Faded CCA posters now cling to peeling walls, echoes of laughter replaced by eerie silence. The scent of dampness and decay fills the air."
     },
     {
       "id": 4,
       "name": "Forgotten Library",
-      "description": "Rows of bookshelves stretch before you, their contents reduced to ruins by time and neglect. Sunlight filters through cracked windows, casting eerie shadows on the torn pages that flutter in the breeze. An air of knowledge lost hangs heavily."
+      "description": "Rows of bookshelves stretch before you, their contents reduced to ruins by time and neglect. Sunlight filters through cracked windows, casting eerie shadows on the torn pages that flutter in the breeze. An air in the libary hangs heavily."
     },
     {
       "id": 5,
       "name": "Abandoned Staff Room",
-      "description": "Before you stretches an empty hall, its basketball hoops missing, and the wooden floor warped and cracked. Faded banners hang from the rafters, commemorating past victories. A strange silence pervades the space."
+      "description": "Before you stretches an empty room, its lights flickering as old worksheets are strewn all over the place. The wooden floor is warped and cracked. Faded words are left on the whiteboard, noting down abscence of teachers and important admin information. A strange silence pervades the space."
     }]
 
 }
