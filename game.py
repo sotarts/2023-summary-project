@@ -19,6 +19,7 @@ class Game:
         else:
             print("room does not exist")
 
+
     def show_status(self) -> None:
         """Prints the health and attack power of the player"""
         print(
