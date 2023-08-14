@@ -3,73 +3,68 @@ import random
 import data
 
 
-class Character:
-    def __init__(self):
-        pass
-
 # Game
 class Game:
+    def __init__(self, roomdict):
+        self.player = data.Player()
+        self.actionslist = data.actionslist()
+        self.gameover = False
+        self.allrooms = roomdict
+        self.current_room = self.allrooms["a"]
 
-    def __init__(self):
-        self._gameover = False
-        self.charname = None
+    def move_to_room(self, chosen_room: str) -> None:
+        """Change and update current room based on the input of the player"""
+        if chosen_room in self.allrooms:
+            self.current_room = self.allrooms[chosen_room]
+        else:
+            print("room does not exist")
 
-        #instantiate player
-        self.player = Character()
 
-        #instantiate rooms
-        self.rooms = []
+    def show_status(self) -> None:
+        """Prints the health and attack power of the player"""
+        print(
+            f"HEALTH: {self.player.health}\nATTACK POWER: {self.player.ap}\nCURRENT ROOM: {self.current_room}"
+        )
 
-    def create_rooms(self) -> None:
-        pass
+    def possible_actions(self) -> list[str]:
+        """Returns a list of possible actions based on certain criterias"""
+        return self.actionslist
 
-    def display_status(self) -> None:
-        pass
+    def display_actions(self, possible_actionslist: list) -> None:
+        """Display possible actions with index"""
+        for count, action in enumerate(possible_actionslist):
+            print(str(count) + ":", action)
 
-    def game_is_over(self) -> bool:
-        return self._gameover
+    def get_action_input(self, possible_actionslist) -> int:
+        """Gets the user input and returns the index of the input in the possible actions lists"""
+        #NEED TO VALIDATE USER INPUT (WILL ADD LATER)
+        userinput = int(
+            input('WHAT DO YOU WANT TO DO? (SELECT THE NUMBER):  '))
+        return self.actionslist.index(possible_actionslist[userinput])
 
-    def get_character_name(self) -> None:
-        """Gets users character name and returns the name chosen"""
-    
-        self.charname = input("What will be your name?: ")
-        reply = input(f'You will be {self.charname} from class of 2024, do you wish to change your name? (y/n)   ')
+    def get_room_input(self) -> str:
+        return input('WHICH ROOM DO YOU WANT TO MOVE TO?:  ')
 
-        #change name loop
-        while reply.upper() != 'N':
-            print("\n")
-            self.charname = input("What will be your new name then?: ")
-            reply = input(f'You will be {self.charname} from class of 2024, do you wish to change your name again? (y/n)   ')
+    def execute_action(self, chosen_action_index: int) -> None:
+        """Execute the action """
+        if chosen_action_index == 0:
+            print("You have explored the room")
 
-    def show_actions(self, explored_counter) -> None: #ask wanqi to add explored counter attribute for each room
-        if explored_counter:
-            pass
+        elif chosen_action_index == 1:
+            self.move_to_room(self.get_room_input())
 
-    def get_user_input(self) -> int: #integer will be used to choose the options
-        pass
+    def run(self):
+        #GAME LOOP
+        while self.gameover is not True:
+            #SHOW STATUS OF THE PLAYER
+            self.show_status()
+            #SHOW THE POSSIBLE ACTIONS
+            self.display_actions(self.possible_actions())
+            #GET USER INPUT
+            user_input = self.get_action_input(self.possible_actions())
+            self.execute_action(user_input)
 
-    def execute_action(self, index: int) -> None:
-        pass
-  
-    def run_game(self):
-        #show welcome message
-        print("WElCOME...........") # function welcome() -> None: needed
-        #allow user to set character name and stores character name
-        self.get_character_name()
-        print("<<situation>>") # function scenario() -> None: needed
 
-        # INSTANTIATE OBJ
-        player = Character
-        #LOOP START
-        while self._gameover is not True:
-            #SHOW STATUS
-            self.display_status()
-            #SHOW POSSIBLE ACTIONS
-            self.show_actions() #room.explored counter needed
-            #EXECUTE ACTION
-            self.execute_action()
-            #UPDATE DATA
-            self.update_data()
-            #CHECK GAME_OVER
-            self.check_gameover()
 
+game = Game(room_dict)
+game.run()
