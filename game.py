@@ -3,6 +3,10 @@ import random
 import data
 
 
+class Character:
+    def __init__(self):
+        pass
+
 # Game
 class Game:
 
@@ -11,7 +15,7 @@ class Game:
         self.charname = None
 
         #instantiate player
-        self.player = Character
+        self.player = Character()
 
         #instantiate rooms
         self.rooms = []
