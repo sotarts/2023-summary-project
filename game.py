@@ -72,8 +72,10 @@ class Game:
             self.show_status()
             #Get possible actions
             possible_actions = self.get_possible_actions()
-            #Show valid actions 
-            self.prompt_valid_actions(possible_actions)
+            #Get chosen action 
+            action = self.prompt_valid_actions(possible_actions) 
+            #Execute action
+            self.execute_action(action)
         
 
     
