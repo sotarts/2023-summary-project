@@ -1,70 +1,95 @@
-#imports
-import random
 import data
 
-
-# Game
 class Game:
-    def __init__(self, roomdict):
+    def __init__(self):
         self.player = data.Player()
-        self.actionslist = data.actionslist()
         self.gameover = False
-        self.allrooms = roomdict
-        self.current_room = self.allrooms["a"]
+        self.current_room = data.get_room("Overgrown Sheltered Courts")
 
-    def move_to_room(self, chosen_room: str) -> None:
-        """Change and update current room based on the input of the player"""
-        if chosen_room in self.allrooms:
-            self.current_room = self.allrooms[chosen_room]
-        else:
-            print("room does not exist")
+    def prompt(self, data:list[object], question:str) -> object:
+        """Takes in a list of object and a question, returns the chosen object"""
+        for i in range(len(data)):
+            print(f"{i}: {data[i].name}")
 
+        userinput = None
+        while not userinput:
+            userinput = input(f"{question} (SELECT A NUMBER)  ")
+            if not userinput.isdecimal() and userinput < len(self.actionslist):
+                continue
+            else:
+                print("That is not a valid input. Please enter again")
 
+        return data[userinput]
+        
+    def move_to_room(self) -> None:
+        prompt()
+        """Change and update current room based on input of the player"""
+        chosen_room = None
+        while not chosen_room:
+            chosen_room = int(input("WHAT ROOM DO YOU WANT TO MOVE TO?  "))
+            if chosen_room < len(data.rooms):
+                self.current_room = data.rooms[chosen_room]
+                continue
+            else: 
+                print("Room does not exist")
+            
     def show_status(self) -> None:
-        """Prints the health and attack power of the player"""
-        print(
-            f"HEALTH: {self.player.health}\nATTACK POWER: {self.player.ap}\nCURRENT ROOM: {self.current_room}"
-        )
+        """prints the health and the current room the player is in"""
+        print(f"HEALTH: {self.player.get_health()}\nCURRENT ROOM: {self.current_room.name}")
+        
+    def get_possible_actions(self) -> list[Action]:
+        """Returns a list of possible Action objects"""
+        if self.current_room.get_monster() and self.current_room.get_ec() > 2: #ADD get_monster() method Room.monster = FALSE if dead
+            p_actions = data.actionslist()
+            p_actions.remove(data.EXPLORE)
+            p_actions.remove(data.GOTO_ROOM)
 
-    def possible_actions(self) -> list[str]:
-        """Returns a list of possible actions based on certain criterias"""
-        return self.actionslist
+        elif self.current_room.get_ec() <= 2:
+            p_actions = data.actionslist()
+            p_actions.remove(data.ATTACK)
+             
+        return p_actions
 
-    def display_actions(self, possible_actionslist: list) -> None:
-        """Display possible actions with index"""
-        for count, action in enumerate(possible_actionslist):
-            print(str(count) + ":", action)
+    def get_action_input(self) -> int:
+        """Validates the user input to return an integer value"""
+        userinput = None
+        while not userinput:
+            userinput = input('WHAT DO YOU WANT TO DO? (SELECT THE NUMBER):  ')
+            if not userinput.isdecimal() and userinput < len(self.actionslist):
+                continue
+            else:
+                print("That is not a valid action")
 
-    def get_action_input(self, possible_actionslist) -> int:
-        """Gets the user input and returns the index of the input in the possible actions lists"""
-        #NEED TO VALIDATE USER INPUT (WILL ADD LATER)
-        userinput = int(
-            input('WHAT DO YOU WANT TO DO? (SELECT THE NUMBER):  '))
-        return self.actionslist.index(possible_actionslist[userinput])
+        return userinput
 
-    def get_room_input(self) -> str:
-        return input('WHICH ROOM DO YOU WANT TO MOVE TO?:  ')
-
-    def execute_action(self, chosen_action_index: int) -> None:
-        """Execute the action """
-        if chosen_action_index == 0:
+        
+    def prompt_valid_actions(self, possible_actions: list[Action]) -> Action:
+        """Displays possible actions, gets user input and return the action object"""
+        #Display possible actions
+        for i in range(len(possible_actions)):
+            print(f"{i}: {possible_actions[i].name}")
+        
+        #Get user input
+        action_input = get_action_input()
+        
+        #Return Action object
+        return possible_actions[action_input]
+    
+    def execute_action(self, action):
+        """Execute chosen action"""
+        if action == data.EXPLORE:
             print("You have explored the room")
+            self.current_room.increment_ec()
 
-        elif chosen_action_index == 1:
-            self.move_to_room(self.get_room_input())
+        elif action == data.GOTO_ROOM:
+            self.current_room.move_to_room()
+        pass
 
-    def run(self):
-        #GAME LOOP
-        while self.gameover is not True:
-            #SHOW STATUS OF THE PLAYER
-            self.show_status()
-            #SHOW THE POSSIBLE ACTIONS
-            self.display_actions(self.possible_actions())
-            #GET USER INPUT
-            user_input = self.get_action_input(self.possible_actions())
-            self.execute_action(user_input)
-
-
-
-game = Game(room_dict)
-game.run()
+    
+    
+    
+    
+        
+        
+            
+    
