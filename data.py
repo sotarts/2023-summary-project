@@ -3,7 +3,6 @@ import json
 def welcome() -> None:
     print( "Welcome to a Post-Apocalyptic version of NYJC. After oppenheimer dropped the third bomb, Singapore was devastated. You desperately want your A-level results located in the NYJC Staff Room. You reach NYJC only to realise it has been partially destroyed by the explosions. The main gate is overun with mutant creatures, hence you need to enter through the only available entry, the sheltered court face entry system. You have to navigate a post-apocolyptic NYJC overuned with mutant creatures, collect weapons, pick up key items, and ultimately collect your 'A' level certificate from the final boss. ")
 
-    
 
 class Player:
     def __init__(self):
@@ -11,7 +10,7 @@ class Player:
         self.ap = 5
         self.weapons = Inventory("weapons")
         self.keyitems = Inventory("keyitems")
-        self.health = Inventory("health")
+        self.healthitems = Inventory("health")
         
     def update_health(self, value: int)-> None:
         self.health += value
@@ -164,10 +163,10 @@ with open("creatures.json", "r") as m:
         monster = Monster.from_dict(record)
         monsters.append(monster)
 
-def get_monster(name: str) -> Room:
-    for monster in monsters:
-        if monster.name == name:
-            return monster
+# def get_monster(name: str) -> Room:
+#     for monster in monsters:
+#         if monster.name == name:
+#             return monster
 
 rooms = []
 with open("room.json", "r") as f:
