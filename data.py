@@ -70,10 +70,10 @@ class Room:
         self.explored_counter = explored_counter
         self.monster = monster
         
-    def get_ec(self, explored_counter):
+    def get_ec(self):
         return self.explored_counter
 
-    def increment_ec(self, explored_counter):
+    def increment_ec(self):
         self.explored_counter += 1
 
     def add_item(self) -> None:
