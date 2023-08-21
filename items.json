@@ -1,35 +1,30 @@
 {
   "weapons": [
     {
-      "name": "Extra Smelly Basketball Shoe",
+      "name": "Basketball Shoe",
       "description": "Years of dirt and sweat has built up in the shoe, causing it to stink up and allowing you to use it as a bomb",
-      "damage": 8,
-      "type": "melee"
+      "damage": 8
     },
     {
       "name": "Mutated lighter",
       "description": "A old lighter used by kitchen staff that has evolved to become a flame thrower.",
-      "damage": 12,
-      "type": "ranged"
+      "damage": 12
     },
       {
       "name": "Rusty Metal Pole",
       "description": "A makeshift melee weapon, once part of the school's plumbing system.",
-      "damage": 8,
-      "type": "melee"
+      "damage": 8
     },
     {
       "name": "Chemical Thrower",
       "description": "A modified fire extinguisher that sprays deadly chemicals.",
-      "damage": 15,
-      "type": "ranged"
+      "damage": 15
     }
   ],
   "key_items": [
     {
         "name": "Old Staff Key Card",
         "description": "An old staff room keycard that belonged to Mrs. A that grants access to a hidden room.",
-        "damage": 0
         "usage": "Accessing secure systems."
     },
     {
@@ -45,7 +40,7 @@
       "healing": 25
     },
     {
-      "name": "Old Canned Food",
+      "name": "Canned School Food",
       "description": "School lunches that are non-perishable and can help you curb your hunger.",
       "healing": 20
     },
