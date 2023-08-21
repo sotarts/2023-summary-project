@@ -221,6 +221,6 @@ GOTO_ROOM = Action("Go To")
 USE_ITEM = Action("Use Item")
 ATTACK = Action("Attack")
 
-def actionlist() -> list[Action]:
+def actionslist() -> list[Action]:
     actionlist = [EXPLORE, GOTO_ROOM, USE_ITEM, ATTACK]
     return actionlist
