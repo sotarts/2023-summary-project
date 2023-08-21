@@ -209,7 +209,7 @@ def get_keyitem(name: str) -> Room:
             return item
 
 def get_weapon(name: str) -> Room:
-    for item in weaponitems:
+    for item in weapons:
         if item.name == name:
             return item
 
@@ -225,5 +225,3 @@ ATTACK = Action("Attack")
 def actionlist() -> list[Action]:
     actionlist = [EXPLORE, GOTO_ROOM, USE_ITEM, ATTACK]
     return actionlist
-
-print(get_room("Overgrown Sheltered Courts"))
