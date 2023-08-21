@@ -46,7 +46,7 @@ class Monster:
         
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
-        object = cls(record["name"], record["description"], record["health"], record["ap"])
+        object = cls(record["name"], record["health"], record["ap"], record["description"])
         return object
 
             
