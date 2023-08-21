@@ -8,7 +8,7 @@ class Game:
     def __init__(self):
         self.player = data.Player()
         self.gameover = False
-        self.current_room = data.rooms[0] #data.get_room("Overgrown Sheltered Courts")
+        self.current_room = data.get_room("Overgrown Sheltered Courts")
 
     def show_status(self) -> None:
         """prints the health and the current room the player is in"""
@@ -35,11 +35,11 @@ class Game:
         """Takes in a list of object and a question, returns the chosen object"""
         for i in range(len(data)):
             print(f"{i+1}: {data[i].name}")
-
+            
         userinput = None
         while not userinput:
             userinput = input(f"{question} (SELECT A NUMBER)  ")
-            if userinput.isdecimal() and int(userinput) < 4:#len(data.actionslist):
+            if userinput.isdecimal() and int(userinput) < len(data) + 1:
                 return data[int(userinput)-1]
                 break
             else:
