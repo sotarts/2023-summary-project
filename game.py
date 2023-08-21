@@ -3,6 +3,7 @@
 #Test monster drop works
 
 import data
+import random
 
 class Game:
     def __init__(self):
@@ -38,7 +39,7 @@ class Game:
             
         userinput = None
         while not userinput:
-            userinput = input(f"{question} (SELECT A NUMBER)  ")
+            userinput = input(f"\n{question} (SELECT A NUMBER)  ")
             if userinput.isdecimal() and int(userinput) < len(data) + 1:
                 return data[int(userinput)-1]
                 break
@@ -59,6 +60,9 @@ class Game:
             self.attack_status(self.current_room.monster)
             #Prompt and get what weapon they want to use
             chosen_weapon = self.prompt(data.weapons, "WHICH WEAPON DO YOU WANT TO USE?")
+            print("You a have a chance to dodge")
+            location = input("Dodge left(1) or right(2)")
+            attack = random.randint(1,2)
             #Deal the damage to the monster
             dealt_damage = self.player.ap * chosen_weapon.ap
             print(f"You dealt {dealt_damage} to {self.current_room.monster.name}.")
@@ -71,8 +75,14 @@ class Game:
             elif self.player.health <= 0:
                 break
             #Monster deal its damage back
-            self.player.update_health(self.current_room.monster.ap * -1)
-            print(f"{self.current_room.monster.name} dealt {self.current_room.monster.ap} to you.")
+            if location == attack:
+                
+                self.player.update_health(self.current_room.monster.ap * -1)
+                print("You landed into the monsters attack range")
+                print(f"{self.current_room.monster.name} dealt {self.current_room.monster.ap} to you.")
+            else:
+                print("you successfully dodged")
+    
             
     def get_possible_actions(self) -> list["Action"]:
         """Returns a list of possible Action objects"""
