@@ -13,8 +13,11 @@ class Player:
         self.keyitems = Inventory("keyitems")
         self.health = Inventory("health")
         
-    def change_health_by(self, value: int)-> None:
+    def update_health(self, value: int)-> None:
         self.health += value
+        
+    def get_health(self) -> int:
+        return self.health
     
 class Inventory:
     def __init__(self, category: str):
@@ -80,6 +83,13 @@ class Room:
     def remove_item(self, name: str) -> None:
         pass
 
+    def get_monster(self) -> "Monster":
+        return self.monster
+        
+    def monster_isdead(self) -> None:
+        self.monster = False
+
+        
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
         name = record["name"]
@@ -87,7 +97,7 @@ class Room:
         if "monster" in record:
             monster = get_monster(record["monster"])
         else:
-            monster = None
+            monster = False
         object = cls(name, description, monster)
         return object
         
@@ -100,7 +110,7 @@ class Item:
 class Weapon(Item):
     def __init__(self, name, description, damage):
         super().__init__(name, description)
-        self.damage = damage
+        self.ap = damage
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
         object = cls(record["name"], record["description"], record["damage"])
@@ -134,11 +144,12 @@ class Monster:
         self.ap = ap
         self.description = description
 
-    def change_health_by(self, value: int)-> None:
+    def update_health(self, value: int)-> None:
         self.health += value
 
     def get_health(self)-> int:
         return self.health
+
         
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
@@ -171,7 +182,7 @@ def get_room(name: str) -> Room:
             return room
 
             
-weaponitems = []
+weapons= []
 keyitems = []
 healthitems = []
 
@@ -179,7 +190,7 @@ with open("items.json", "r") as a:
     items: dict = json.load(a)
     for weapon_data in items["weapons"]:
         weapon = Weapon.from_dict(weapon_data)
-        weaponitems.append(weapon)
+        weapons.append(weapon)
     for keyitem_data in items["key_items"]:
         keyitem = KeyItem.from_dict(keyitem_data)
         keyitems.append(keyitem)
@@ -198,7 +209,7 @@ def get_keyitem(name: str) -> Room:
             return item
 
 def get_weapon(name: str) -> Room:
-    for item in weaponitems:
+    for item in weapons:
         if item.name == name:
             return item
 
