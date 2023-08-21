@@ -34,13 +34,13 @@ class Game:
     def prompt(self, data:list[object], question:str) -> object:
         """Takes in a list of object and a question, returns the chosen object"""
         for i in range(len(data)):
-            print(f"{i}: {data[i].name}")
+            print(f"{i+1}: {data[i].name}")
 
         userinput = None
         while not userinput:
             userinput = input(f"{question} (SELECT A NUMBER)  ")
-            if userinput.isdecimal() and int(userinput) < 3:#len(data.actionslist):
-                return data[int(userinput)]
+            if userinput.isdecimal() and int(userinput) < 4:#len(data.actionslist):
+                return data[int(userinput)-1]
                 break
             else:
                 userinput = None
