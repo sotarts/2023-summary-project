@@ -46,7 +46,7 @@ class Monster:
         
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
-        object = cls(record["name"], record["description"], record["health"], record["ap"])
+        object = cls(record["name"], record["health"], record["ap"], record["description"])
         return object
 
             
@@ -222,5 +222,6 @@ USE_ITEM = Action("Use Item")
 ATTACK = Action("Attack")
 
 def actionslist() -> list[Action]:
-    actionlist = [EXPLORE, GOTO_ROOM, USE_ITEM, ATTACK]
-    return actionlist
+    actionslist = [EXPLORE, GOTO_ROOM, USE_ITEM, ATTACK]
+    return actionslist
+
