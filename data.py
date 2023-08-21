@@ -224,3 +224,4 @@ ATTACK = Action("Attack")
 def actionslist() -> list[Action]:
     actionslist = [EXPLORE, GOTO_ROOM, USE_ITEM, ATTACK]
     return actionslist
+
