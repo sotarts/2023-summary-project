@@ -33,37 +33,37 @@ class Inventory:
 
         
 class Item:
-    def __init__(self, name, description):
+    def __init__(self, name, description, category):
         self.name = name
         self.description = description
-        
+        self.category = category
 class Weapon(Item):
-    def __init__(self, name, description, damage):
-        super().__init__(name, description)
+    def __init__(self, name, description, damage, category):
+        super().__init__(name, description, category)
         self.ap = damage
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
-        object = cls(record["name"], record["description"], record["damage"])
+        object = cls(record["name"], record["description"], record["damage"], record["category"])
         return object
 
 class KeyItem(Item):
-    def __init__(self, name, description, usage):
-        super().__init__(name, description)
+    def __init__(self, name, description, usage, category):
+        super().__init__(name, description, category)
         self.usage = usage
 
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
-        object = cls(record["name"], record["description"], record["usage"])
+        object = cls(record["name"], record["description"], record["usage"], record["category"])
         return object
 
 class HealthItem(Item):
-    def __init__(self, name, description, health):
-        super().__init__(name, description)
+    def __init__(self, name, description, health, category):
+        super().__init__(name, description, category)
         self.health = health
 
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
-        object = cls(record["name"], record["description"], record["healing"])
+        object = cls(record["name"], record["description"], record["healing"], record["category"])
         return object
 
 
