@@ -6,7 +6,7 @@ import data
 import random
 
 class Game:
-    def __init__(self):
+    def __init__(self)-> None:
         self.player = data.Player()
         self.gameover = False
         self.current_room = data.get_room("Overgrown Sheltered Courts")
@@ -22,68 +22,120 @@ class Game:
     def check_gameover(self) -> None:
         """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
         if self.player.health <= 0:
-            #self.lose()
-            print("You died")
+            print("You died................")
             self.gameover = True
 
-        #elif finalmonster.health == 0:
-        #    self.win()
-        #    self.gameover = True
+        elif data.get_monster("Final Boss").get_health() <= 0:
+            print("You have succesfully killed the final boss and won the game!!!! Hooray!!\nAs you watch the final boss turn into  dust you realised you didnt actually take Alevels but took IB instead :)")
+            self.gameover = True
         else:
             pass
-            
+                   
     def prompt(self, data:list[object], question:str) -> object:
         """Takes in a list of object and a question, returns the chosen object"""
         for i in range(len(data)):
             print(f"{i+1}: {data[i].name}")
-            
+
         userinput = None
         while not userinput:
-            userinput = input(f"\n{question} (SELECT A NUMBER)  ")
+            userinput = input(f"{question} (SELECT A NUMBER)  ")
             if userinput.isdecimal() and int(userinput) < len(data) + 1:
+                print("")
                 return data[int(userinput)-1]
                 break
             else:
                 userinput = None
-                print("That is not a valid input. Please enter again")
-        
+                print("That is not a valid input. Please enter again\n")
+
+    def prompt_non_obj(self, data: list, question:str):
+        userinput = None
+        while not userinput:
+            userinput = input(f"{question} (SELECT A NUMBER)  ")
+            if userinput.isdecimal() and int(userinput) < len(data) + 1:
+                print("")
+                return data[int(userinput)-1]
+                break
+            userinput = None
+            print("That is not a valid input. Please enter again\n")
+                
     def move_to_room(self) -> None:
         """Prompts room and update current room based on input of the player"""
         room = self.prompt(data.rooms, "WHICH ROOM DO YOU WANT TO GO TO?")
         self.current_room = room
+        print("-"*20)
+        print(self.current_room.description)
+        print("-"*20)
 
     def attack(self) -> None:
         """WHOLE ATTACKING SEQUENCE """
         #---ATTACK LOOP---
-        while self.current_room.monster.get_health() > 0 and self.player.health > 0:
-            #Display monster and your status
-            self.attack_status(self.current_room.monster)
-            #Prompt and get what weapon they want to use
-            chosen_weapon = self.prompt(data.weapons, "WHICH WEAPON DO YOU WANT TO USE?")
-            print("You a have a chance to dodge")
-            location = input("Dodge left(1) or right(2)")
-            attack = random.randint(1,2)
-            #Deal the damage to the monster
-            dealt_damage = self.player.ap * chosen_weapon.ap
-            print(f"You dealt {dealt_damage} to {self.current_room.monster.name}.")
-            self.current_room.monster.update_health(self.player.ap * chosen_weapon.ap * -1)
-            #Check if monster or player is dead, exit loop if true
-            if self.current_room.monster.get_health() <= 0:
-                print(f"You have killed the {self.current_room.monster.name}")
-                self.current_room.monster_isdead()
-                break
-            elif self.player.health <= 0:
-                break
-            #Monster deal its damage back
-            if location == attack:
-                
-                self.player.update_health(self.current_room.monster.ap * -1)
-                print("You landed into the monsters attack range")
-                print(f"{self.current_room.monster.name} dealt {self.current_room.monster.ap} to you.")
+        while self.current_room.monster and self.player.health > 0:
+            self.show_layout(5)
+            dodge_slot = self.prompt_non_obj([1,2,3],"You have a chance to dodge, which slot will you like to dodge to?")
+            attack_slot = self.prompt_non_obj([1,2,3,4,5],"Choose which square you would like to attack.")
+            chosen_weapon = self.prompt(data.weapons, "Which weapon do you want to use?")
+
+            if attack_slot == random.randint(1,1):
+                self.current_room.monster.update_health(self.player.ap * chosen_weapon.ap *-1)
+                print(f"You guessed correctly and dealt {self.player.ap * chosen_weapon.ap} damage!")
             else:
-                print("you successfully dodged")
-    
+                print("Oops, your attack missed the monster..")
+                
+            if self.current_room.monster.get_health() > 0:
+                if random.randint(1,4) == dodge_slot:
+                    self.player.update_health(self.current_room.monster.ap*-1)
+                    print(f"Uh oh, you ran into the monster's attack path, you lost {self.current_room.monster.ap} HP..")
+
+                else:
+                    print("You managed to dodge the monsters attack successfully!")
+
+            else:
+                print("You have killed the monster!!!")
+                self.current_room.monster_isdead()
+
+    def use_item(self) -> None:
+        item_type = self.prompt_non_obj(["Health Items", "Key Items"], "Which object do you want to use?")
+        if item_type == "Health Item":                 
+            self.use_healthitem(self.prompt(self.player.healthitems.get_inventory()))
             
+        elif item_type == "Key Items":
+            self.use_keyitem(self.prompt(self.player.keyitems.get_inventory()))
+
+    def use_healthitem(self, healthitem: object)-> None:
+        """Updates the player health using the chosen item"""
+        self.player.update_health(healthitem.health)
+
+    def pickup_loot(self) -> None:
+        """Check if monster have loot and add it to the respective inventories"""
+        if not self.current_room.monster.dropitem:
+            if self.current_room.monster.dropitem.type() == "Health Items":
+                self.player.healthitems.add
+                pass
+            
+    def use_keyitem(self, keyitem:object) -> None:
+        if keyitem == data.get_keyitem("Keycard"):
+            if self.current_room == data.get_room("Forgotten Library"):
+                self.current_room = data.get_room("Abandoned Staff Room")
+                print("You have accessed the staff room... the final boss might be lurking nearby....")
+            else:
+                print("There is no use for this item in this room.")
+
+                
+    def show_layout(self, slot: int):
+        divider = " |"
+        spacer = ((slot*2+ 1 - 7)//2) *" "
+        print("\n----------ATTACKING----------")
+        print(f"{self.current_room.monster.name} HP: {self.current_room.monster.get_health()}")
+        print("_" * (slot*2 + 1))
+        print(f"|{divider * slot}")
+        print(" "+ " ".join([str(i) for i in range(1,slot +1)]))
+        print("\n"*2)
+        print(spacer + ("_" * (7)))
+        print(spacer + f"|{divider * 3}")
+        print(spacer + " "+ " ".join([str(i) for i in range(1,4)]))
+        print(f"Your HP: {self.player.get_health()}")
+        print("-"*30+"\n")
+
     def get_possible_actions(self) -> list["Action"]:
         """Returns a list of possible Action objects"""
         if self.current_room.get_ec() <= 2:
@@ -92,7 +144,8 @@ class Game:
             return p_actions
 
         else:
-            if self.current_room.get_monster() != False: #ADD get_monster() method Room.monster = FALSE if dead
+            if self.current_room.get_monster() != False:
+                print(f"\nYou found the {self.current_room.monster.name}!\nDESCRIPTION: {self.current_room.monster.description}\n")
                 p_actions = data.actionslist()
                 p_actions.remove(data.EXPLORE)
                 p_actions.remove(data.GOTO_ROOM)
@@ -102,14 +155,14 @@ class Game:
                 p_actions = data.actionslist()
                 p_actions.remove(data.ATTACK)
                 return p_actions
-      
+
     def prompt_valid_actions(self, possible_actions: list["Action"]) -> "Action":
         """Displays possible actions, gets user input and return the action object"""
         #Display and Get user input
         action = self.prompt(possible_actions, "WHAT DO YOU WANT TO DO?")
         #Return Action object
         return action
-    
+
     def execute_action(self, action):
         """Execute chosen action"""
         if action == data.EXPLORE:
@@ -120,6 +173,7 @@ class Game:
             self.move_to_room()
 
         elif action == data.USE_ITEM:
+            self.show_layout(3)
             pass
 
         elif action == data.ATTACK:
@@ -142,7 +196,3 @@ class Game:
             self.execute_action(action)
             #Check if game over
             self.check_gameover()
-        
-game = Game()
-game.run()
-    
