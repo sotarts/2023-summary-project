@@ -21,12 +21,13 @@ class Player:
 class Inventory:
     def __init__(self, category: str):
         self.category = category
-        self.contents = {}
+        self.contents = []
 
     def add(self, item) -> None:
         if item.name in self.contents:
             return
-        self.contents[item.name] = item
+        else:
+            self.contents.append(item)
         
     def get_inventory(self) -> dict:
         return self.contents 
@@ -99,12 +100,13 @@ def get_weapon(name: str) -> "Room":
             return item
 
 class Monster:
-    def __init__(self, name: str, description: str, health: int, ap: int, item: "Item"):
+    def __init__(self, name: str, description: str, health: int, ap: int, item: "Item", slot: int):
         self.name = name
         self.health = health
         self.ap = ap
         self.description = description
         self.item = item
+        self.slot = slot
 
     def update_health(self, value: int)-> None:
         self.health += value
@@ -119,7 +121,7 @@ class Monster:
             item  = get_keyitem(record["item"])
         else:
             item = None
-        object = cls(record["name"], record["description"], record["health"], record["ap"], item)
+        object = cls(record["name"], record["description"], record["health"], record["ap"], item, record["slot"])
         return object
 
             
@@ -267,3 +269,4 @@ ATTACK = Action("Attack")
 def actionslist() -> list[Action]:
     actionslist = [EXPLORE, GOTO_ROOM, USE_ITEM, ATTACK]
     return actionslist
+
