@@ -3,25 +3,26 @@
     {
       "name": "Basketball Shoe",
       "description": "Years of dirt and sweat has built up in the shoe, causing it to stink up and allowing you to use it as a bomb",
-      "damage": 8,
+      "damage": 6,
         "category": "weapons"
+        
     },
     {
       "name": "Mutated lighter",
       "description": "A old lighter used by kitchen staff that has evolved to become a flame thrower.",
-      "damage": 12,
+      "damage": 8,
         "category": "weapons"
     },
       {
       "name": "Rusty Metal Pole",
       "description": "A makeshift melee weapon, once part of the school's plumbing system.",
-      "damage": 8,
+      "damage": 10,
           "category": "weapons"
     },
     {
       "name": "Chemical Thrower",
       "description": "A modified fire extinguisher that sprays deadly chemicals.",
-      "damage": 15,
+      "damage": 12,
         "category": "weapons"
     }
   ],
@@ -30,13 +31,13 @@
         "name": "Old Staff Key Card",
         "description": "An old staff room keycard that belonged to Mrs. A that grants access to a hidden room.",
         "usage": "Accessing secure systems.",
-        "category": "key item"
+        "category": "key_item"
     },
     {
         "name": "Cat",
         "description": "This is the Ultimate Monster's precious cat!",
         "usage": "Prompts the ultimate monster to show up.",
-        "category": "key item"
+        "category": "key_item"
     }
   ],
   "health_items": [
@@ -44,19 +45,19 @@
       "name": "Medkit",
       "description": "A compact medical kit containing bandages, antiseptics, and painkillers.",
       "healing": 25,
-        "category": "health item"
+        "category": "health_item"
     },
     {
       "name": "Canned School Food",
       "description": "School lunches that are non-perishable and can help you curb your hunger.",
       "healing": 20,
-        "category": "health item"
+        "category": "health_item"
     },
     {
       "name": "Bio-Stimulant",
       "description": "An experimental stimulant from the Science Labs that instantly restores a small amount of health.",
       "healing": 20,
-        "category": "health item"
+        "category": "health_item"
     }
   ]
 }
