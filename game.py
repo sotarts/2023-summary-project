@@ -33,11 +33,16 @@ class Game:
         else:
             pass
                    
-    def prompt(self, data:list[object], question:str) -> object:
+    def prompt(self, data:list[object], question:str, isObjList=True, show=True) -> object:
         """Takes in a list of object and a question, returns the chosen object"""
-        for i in range(len(data)):
-            print(f"{i+1}: {data[i].name}")
-
+        if show:
+            if isObjList:
+                for i in range(len(data)):
+                    print(f"{i+1}: {data[i].name}")
+            else:
+                for i in range(len(data)):
+                    print(f"{i+1}: {data[i]}")
+    
         userinput = None
         while not userinput:
             userinput = input(f"{question} (SELECT A NUMBER)  ")
@@ -73,8 +78,12 @@ class Game:
         #---ATTACK LOOP---
         while self.current_room.monster and self.player.health > 0:
             self.show_layout(5)
-            dodge_slot = self.prompt_non_obj([1,2,3],"You have a chance to dodge, which slot will you like to dodge to?")
-            attack_slot = self.prompt_non_obj([1,2,3,4,5],"Choose which square you would like to attack.")
+            dodge_slot = self.prompt([1,2,3],"You have a chance to dodge, which slot will you like to dodge to?", False, False)
+            slot_list = []
+            for i in range(1,self.current_room.monster.slots+1):
+                slot_list.append(i)
+            
+            attack_slot = self.prompt_non_obj(slot_list,"Choose which square you would like to attack.")
             chosen_weapon = self.prompt(self.player.weapons.get_inventory(), "Which weapon do you want to use?")
 
             if attack_slot == random.randint(1,1):
@@ -97,12 +106,12 @@ class Game:
                 self.current_room.monster_isdead()
 
     def use_item(self) -> None:
-        item_type = self.prompt_non_obj(["Health Items", "Key Items"], "Which object do you want to use?")
+        item_type = self.prompt_non_obj(["Health Items", "Key Items"], "WHICH TYPE OF OBJECT DO YOU WANT TO USE?")
         if item_type == "Health Item":                 
-            self.use_healthitem(self.prompt(self.player.healthitems.get_inventory()))
+            self.use_healthitem(self.prompt(self.player.healthitems.get_inventory(), "WHICH OBJECT DO YOU WANT TO USE?"))
             
         elif item_type == "Key Items":
-            self.use_keyitem(self.prompt(self.player.keyitems.get_inventory()))
+            self.use_keyitem(self.prompt(self.player.keyitems.get_inventory(),"WHICH OBJECT DO YOU WANT TO USE?"))
 
     def use_healthitem(self, healthitem: object)-> None:
         """Updates the player health using the chosen item"""
@@ -180,7 +189,7 @@ class Game:
             self.move_to_room()
 
         elif action == data.USE_ITEM:
-            self.show_layout(3)
+            self.use_item()
             pass
 
         elif action == data.ATTACK:
