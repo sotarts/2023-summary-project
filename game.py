@@ -53,11 +53,14 @@ class Game:
     def check_gameover(self) -> None:
         """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
         if self.player.health <= 0:
-            print("You died................")
+            if self.current_room == data.get_room("Abandoned Staff Room"):
+                data.loseboss()
+            else:
+                data.loseothers()
             self.gameover = True
 
         elif data.get_monster("Final Boss").get_health() <= 0:
-            print("You have succesfully killed the final boss and won the game!!!! Hooray!!\nAs you watch the final boss turn into  dust you realised you didnt actually take Alevels but took IB instead :)")
+            data.win()
             self.gameover = True
         else:
             pass
@@ -74,7 +77,7 @@ class Game:
     
         userinput = None
         while not userinput:
-            userinput = input(f"{question} (SELECT A NUMBER)  ")
+            userinput = input(f"{question} (SELECT A NUMBER): ")
             if userinput.isdecimal() and int(userinput) < len(data) + 1 and int(userinput) != 0:
                 print("")
                 return data[int(userinput)-1]
