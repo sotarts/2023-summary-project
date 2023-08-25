@@ -25,12 +25,11 @@ class Game:
         elif isinstance(obj, data.Room):
             if incremented_desc:
                 print("-----EXPLORED RESULTS-----")
-                # if obj.get_ec() < obj.get_maxexplored():
-                #     pass put the description here
-                # else:
-                #     print("There is nothing left to explore.")
-                    
-                print(obj.description[obj.get_ec()])
+                if obj.get_ec() < obj.max_explored:
+                    pass
+                else:
+                    print("There is nothing left to explore.")
+
             else:
                 print(("-"*5) + obj.name + ("-"*5) )
                 print(f"DESCRIPTION: {obj.description}")
@@ -194,7 +193,7 @@ class Game:
             copy_list.remove(data.ATTACK)
             return copy_list
         
-        if self.current_room.get_ec() <= self.current_room.monster.max_explored:
+        if self.current_room.get_ec() <= self.current_room.max_explored:
             copy_list.remove(data.ATTACK)
             return copy_list
         else:
