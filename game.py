@@ -103,6 +103,7 @@ class Game:
             attack_slot = self.prompt(slot_list,"Choose which square you would like to attack.", False, False)
             chosen_weapon = self.prompt(self.player.weapons.get_inventory(), "Which weapon do you want to use?")
 
+            print("-----BATTLE RESULT-----")
             if attack_slot == random.randint(1,self.current_room.monster.slot): #change b to max slot of monster
                 self.current_room.monster.update_health(self.player.ap * chosen_weapon.ap *-1)
                 print(f"You guessed correctly and dealt {self.player.ap * chosen_weapon.ap} damage!")
@@ -114,9 +115,10 @@ class Game:
                     self.player.update_health(self.current_room.monster.ap*-1)
                     print(f"Uh oh, you ran into the monster's attack path, you lost {self.current_room.monster.ap} HP..")
                 else:
-                    print("You managed to dodge the monsters attack successfully!")
+                    print("You managed to dodge the monsters attack successfully!\n")
             else:
-                print("You have killed the monster!!!")
+                print("You have killed the monster!!!\n")
+                print("-----SPOILS-----")
                 self.pickup_loot(self.current_room.monster)
                 self.current_room.monster_isdead()
                 
