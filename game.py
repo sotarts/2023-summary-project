@@ -6,6 +6,7 @@ import data
 import random
 
 class Game:
+    """Encapsulates the main game"""
     def __init__(self)-> None:
         self.player = data.Player()
         self.gameover = False
@@ -85,7 +86,7 @@ class Game:
         room_data.remove(data.get_room("Abandoned Staff Room"))
         room = self.prompt(room_data, "WHICH ROOM DO YOU WANT TO GO TO?")
         self.current_room = room
-        
+  
     def attack(self) -> None:
         """WHOLE ATTACKING SEQUENCE, attacks monster in current room. """
         #---ATTACK LOOP---
@@ -115,7 +116,7 @@ class Game:
                 print("You have killed the monster!!!")
                 self.pickup_loot(self.current_room.monster)
                 self.current_room.monster_isdead()
-
+                
     def use_item(self) -> None:
         item_type = self.prompt(["Health Items", "Key Items"], "WHICH TYPE OF OBJECT DO YOU WANT TO USE?", False)
         if item_type == "Health Items":                 
@@ -193,13 +194,13 @@ class Game:
             copy_list.remove(data.ATTACK)
             return copy_list
         
-        if self.current_room.get_ec() <= 2: #self.current_room.monster.get_maxexplored():
+        if self.current_room.get_ec() <= self.current_room.monster.max_explored:
             copy_list.remove(data.ATTACK)
             return copy_list
         else:
             if self.current_room.get_monster() != False:
                 print(f"\nYou found the {self.current_room.monster.name}!\nDESCRIPTION: {self.current_room.monster.description}\n")
-                # self.display_status(self.current_room.monster)
+                self.display_status(self.current_room.monster)
                 copy_list.remove(data.EXPLORE)
                 copy_list.remove(data.GOTO_ROOM)
                 return copy_list
@@ -280,8 +281,6 @@ class Game:
             
 
 #TO DO TMR:
-#ask wanqi to make add item non duplicable when adding
-# - add maxexplore attribute for room and get_maxexplore() which returns the max explore number
 #  ask wanqi to add win and lose statements in data.py instead
 
 #ME:
