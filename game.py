@@ -16,20 +16,10 @@ class Game:
 
     def display_status(self, obj: object, incremented_desc=False) -> None:
         """Takes in any object and print the relevant info based on what type the object is."""
+        if not obj:
+            return
         if isinstance(obj, data.Player):
             print(f"HEALTH: {self.player.get_health()}\nCURRENT ROOM: {self.current_room.name}")
-
-        elif isinstance(obj, data.Weapon):
-            print(("-"*5) + obj.name + "'s Status" + ("-"*5) )
-            print(f"DESCRIPTION: {obj.description}\nATTACK BUFF: +{obj.ap}")
-
-        # elif obj.category == "key item":
-        #     print(("-"*5) + obj.name + "'s Status" + ("-"*5) )
-        #     print(f"DESCRIPTION: {obj.description}\nUSAGE:{obj.usage}")
-
-        # elif obj.category == "health item":
-        #     print(("-"*5) + obj.name + "'s Status" + ("-"*5) )
-        #     print(f"DESCRIPTION: {obj.description}\nHEALTH:{obj.health}")
 
         elif isinstance(obj, data.Room):
             if incremented_desc:
@@ -42,7 +32,19 @@ class Game:
                 print(obj.description[obj.get_ec()])
             else:
                 print(("-"*5) + obj.name + ("-"*5) )
-                print(f"DESCRIPTION: {obj.description}")       
+                print(f"DESCRIPTION: {obj.description}")
+
+        elif isinstance(obj, data.Weapon):
+            print(("-"*5) + obj.name + "'s Status" + ("-"*5) )
+            print(f"DESCRIPTION: {obj.description}\nATTACK BUFF: +{obj.ap}")
+
+        elif obj.category == "key_item":
+            print(("-"*5) + obj.name + "'s Status" + ("-"*5) )
+            print(f"DESCRIPTION: {obj.description}\nUSAGE:{obj.usage}")
+
+        elif obj.category == "health_item":
+            print(("-"*5) + obj.name + "'s Status" + ("-"*5) )
+            print(f"DESCRIPTION: {obj.description}\nHEALTH:{obj.health}")
 
     def check_gameover(self) -> None:
         """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
@@ -155,23 +157,19 @@ class Game:
         """Check if monster have loot and add it to the respective inventories"""
         if not monster.item:
             return
-        # for i in range(len(monster_drops)):
-        #     if self.current_room.monster.item.category() == "health_item":
-        #         self.player.healthitems.add(self.current_room.monster.item[i])
+        for i in range(len(monster.item)):
+            if monster.item[i].category == "health_item":
+                self.player.healthitems.add(monster.item[i])
                 
-        #     elif self.current_room.monster.item.category() == "key_item ":
-        #         self.player.keyitems.add(self.current_room.monster.item[i])
-                
-        #     print(f"+{self.current_room.monster.item[i].name} added to your inventory!")
-        if  monster.item.category == "health item":
-            self.player.healthitems.add(monster.item)
-            print(f"+ {monster.item.name} added to your inventory!")
+            elif monster.item[i].category == "key_item":
+                self.player.keyitems.add(monster.item[i])
 
-        elif monster.item.category == "key item":
-            self.player.keyitems.add(monster.item)
-            print(f"+ {monster.item.name} added to your inventory!")
-            self.display_status(monster.item)
-        
+            elif monster.item[i].category == "weapons":
+                self.player.weapons.add(monster.item[i])
+                
+            print(f"+{self.current_room.monster.item[i].name} added to your inventory!")
+            self.display_status(monster.item[i])
+
     def show_layout(self, slot: int)-> None:
         """Prints the attacking layout"""
         divider = " |"
@@ -217,6 +215,7 @@ class Game:
                     found_item = data.healthitems[random.randint(0,len(data.healthitems)-1)]
                     self.player.healthitems.add(found_item)
                     print(f"You found {found_item.name}!!")
+                    return found_item
 
         elif self.current_room.get_ec() <= 4:
             if random.randint(1,2) == 1:
@@ -224,6 +223,8 @@ class Game:
                     found_item = data.healthitems[random.randint(0,len(data.healthitems)-1)]
                     self.player.healthitems.add(found_item)
                     print(f"You found {found_item.name}!!")
+                    return found_item
+
 
         elif self.current_room.get_ec() > 5:
             if random.randint(1,2) == 1:
@@ -231,6 +232,7 @@ class Game:
                     found_item = data.healthitems[random.randint(0,len(data.healthitems)-1)]
                     self.player.healthitems.add(found_item)
                     print(f"You found {found_item.name}!!")
+                    return found_item
                     
     def prompt_valid_actions(self, possible_actions: list["Action"]) -> "Action":
         """Displays possible actions, gets user input and return the action object"""
@@ -244,7 +246,7 @@ class Game:
         if action == data.EXPLORE:
             #Prints description of explore, randomise loot, and increments ec
             self.display_status(self.current_room, True)
-            self.get_randomised_loot()
+            self.display_status(self.get_randomised_loot())
             self.current_room.increment_ec()
 
         elif action == data.GOTO_ROOM:
