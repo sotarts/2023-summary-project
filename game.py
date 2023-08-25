@@ -26,10 +26,11 @@ class Game:
             if incremented_desc:
                 print("-----EXPLORED RESULTS-----")
                 if obj.get_ec() < obj.max_explored:
+                    print(obj.description[obj.get_ec()])
+                    print("")
                     pass
                 else:
-                    print("There is nothing left to explore.")
-
+                    print("There is nothing left to explore.\n")
             else:
                 print(("-"*5) + obj.name + ("-"*5) )
                 print(f"DESCRIPTION: {obj.description}")
