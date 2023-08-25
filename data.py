@@ -3,7 +3,12 @@ import json
 def welcome() -> None:
     print( "Welcome to a Post-Apocalyptic version of NYJC. After oppenheimer dropped the third bomb, Singapore was devastated. You desperately want your A-level results located in the NYJC Staff Room. You reach NYJC only to realise it has been partially destroyed by the explosions. The main gate is overun with mutant creatures, hence you need to enter through the only available entry, the sheltered court face entry system. You have to navigate a post-apocolyptic NYJC overuned with mutant creatures, collect weapons, pick up key items, and ultimately collect your 'A' level certificate from the final boss. ")
 
+def win()->None:
+    pass
 
+def lose()-> None:
+    pass
+    
 class Player:
     def __init__(self):
         self.health = 100
@@ -147,7 +152,7 @@ def get_monster(name: str) -> "Room":
 
 
 class Room:
-    def __init__(self, name: str, description: str, monster: object, max_explored: int, explored_counter=0):
+    def __init__(self, name: str, description: list, monster: object, max_explored: int, explored_counter=0):
         self.name = name
         self.description = description
         self.explored_counter = explored_counter
@@ -172,11 +177,29 @@ class Room:
     def monster_isdead(self) -> None:
         self.monster = False
 
-        
+
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
         name = record["name"]
-        description = record["description"]
+        description = []
+        description1 = record["description"]
+        description.append(description1)
+        description2 = record["description2"]
+        description.append(description2)
+        description3 = record["description3"]
+        description.append(description3)
+        if "description4" in record:
+            description4 = record["description4"]
+            description.append(description4)
+        if "description5" in record:
+            description5 = record["description5"]
+            description.append(description5)
+        if "description6" in record:
+            description6 = record["description6"]
+            description.append(description6)
+        if "description7" in record:
+            description7 = record["description7"]
+            description.append(description7)
         max_explored = record["max_explored"]
         if "monster" in record:
             monster = get_monster(record["monster"])
@@ -213,3 +236,4 @@ ATTACK = Action("Attack")
 def actionslist() -> list[Action]:
     actionslist = [EXPLORE, GOTO_ROOM, USE_ITEM, ATTACK]
     return actionslist
+    

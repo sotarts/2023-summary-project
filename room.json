@@ -2,29 +2,49 @@
     {
     "name": "Overgrown Sheltered Courts",
     "description": "Stepping outside, you find yourself in the overgrown shuttle courts swallowed by nature. Tall grasses and vines obscure the cracked pavement. The skeletal remains of the basketball hoop creak in the breeze. A sense of desolation hangs in the air.",
+        "description2": "",
+        "description3": "",
         "max_explored": 3
     },
     {
         "name": "Ransacked Canteen",
         "description": "You enter what used to be the canteen, now a scene of chaos. Tables and chairs are overturned, and the floor is littered with discarded wrappers and cans. A faint odor of spoiled food lingers.",
+        "description2": "",
+        "description3": "",
+        "description4": "",
         "monster": "Maggot-Infested Bird",
         "max_explored": 4
     },
     {
         "name": "Ruined Concoursed",
         "description": "A You stand amidst the crumbling pillars and shattered glass, the school's once vibrant concourse now lies in ruins. Faded CCA posters now cling to peeling walls, echoes of laughter replaced by eerie silence. The scent of dampness and decay fills the air",
+        "description2": "",
+        "description3": "",
+        "description4": "",
+        "description5": "",
         "monster": "Abhorrently Large Cockroach",
         "max_explored": 5
     },
     {
         "name": "Forgotten Library",
         "description": "Rows of bookshelves stretch before you, their contents reduced to ruins by time and neglect. Sunlight filters through cracked windows, casting eerie shadows on the torn pages that flutter in the breeze. An air in the libary hangs heavily.",
-         "monster": "Lingering Bookworm",
+        "description2": "",
+        "description3": "",
+        "description4": "",
+        "description5": "",
+        "description6": "",
+        "monster": "Lingering Bookworm",
         "max_explored": 6
     },
     {
         "name": "Abandoned Staff Room",
         "description": "Before you stretches an empty room, its lights flickering as old worksheets are strewn all over the place. The wooden floor is warped and cracked. Faded words are left on the whiteboard, noting down abscence of teachers and important admin information. A strange silence pervades the space.",
+        "description2": "",
+        "description3": "",
+        "description4": "",
+        "description5": "",
+        "description6": "",
+        "description7": "",
          "monster": "Final Boss",
         "max_explored": 7
     }
