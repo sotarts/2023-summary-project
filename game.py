@@ -13,7 +13,7 @@ class Game:
         self.current_room = data.get_room("Overgrown Sheltered Courts")
 
         # Add first weapon; fists into the weapons inventory
-        self.player.weapons.add(data.get_weapon("Chemical Thrower"))
+        self.player.weapons.add(data.get_weapon("Basketball Shoe"))
 
     def display_status(self, obj: object, incremented_desc=False) -> None:
         """Takes in any object and print the relevant info based on what type the object is."""
@@ -261,6 +261,7 @@ class Game:
             #change room and print room status
             self.move_to_room()
             self.display_status(self.current_room, True)
+            self.current_room.increment_ec()
 
         elif action == data.USE_ITEM:
             self.use_item()
