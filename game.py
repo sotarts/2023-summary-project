@@ -5,19 +5,41 @@
 import data
 import random
 
+RED = "\033[31m"
+GREEN = "\033[92m"
+YELLOW = "\033[93m"
+BLUE = "\033[94m"
+MAGENTA = "\033[95m"
+CYAN = "\033[96m"
+RESET  = "\033[97m"
+
 class Game:
     def __init__(self)-> None:
         self.player = data.Player()
         self.gameover = False
         self.current_room = data.get_room("Overgrown Sheltered Courts")
-
+        
+        
     def show_status(self) -> None:
         """prints the health and the current room the player is in"""
-        print(f"HEALTH: {self.player.get_health()}\nCURRENT ROOM: {self.current_room.name}")
+        colour = GREEN
+        if self.player.get_health() <= 75:
+            colour = YELLOW
+        elif self.player.get_health() <= 25:
+            colour = RED
+            
+        print(f"HEALTH: {colour}{self.player.get_health()}                            {RESET}\nCURRENT ROOM: {self.current_room.name}")
 
     def attack_status(self, monster: object) -> None:
         """Prints the name and health of the monster and your health"""
-        print(f"\nMonster hp: {monster.get_health()}\nYour hp: {self.player.get_health()}\n")
+
+        colour = GREEN
+        if self.player.get_health() <= 75:
+            colour = YELLOW
+        elif self.player.get_health() <= 25:
+            colour = RED
+            
+        print(f"\nMonster hp: {monster.get_health()}\nYour hp: {colour}{self.player.get_health()}{RESET}\n")
 
     def check_gameover(self) -> None:
         """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
@@ -122,6 +144,13 @@ class Game:
 
                 
     def show_layout(self, slot: int):
+
+        colour = GREEN
+        if self.player.get_health() <= 75:
+            colour = YELLOW
+        elif self.player.get_health() <= 25:
+            colour = RED
+        
         divider = " |"
         spacer = ((slot*2+ 1 - 7)//2) *" "
         print("\n----------ATTACKING----------")
@@ -133,7 +162,7 @@ class Game:
         print(spacer + ("_" * (7)))
         print(spacer + f"|{divider * 3}")
         print(spacer + " "+ " ".join([str(i) for i in range(1,4)]))
-        print(f"Your HP: {self.player.get_health()}")
+        print(f"Your HP: {colour}{self.player.get_health()}{RESET}")
         print("-"*30+"\n")
 
     def get_possible_actions(self) -> list["Action"]:
