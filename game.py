@@ -35,6 +35,9 @@ class Game:
                 print(("-"*5) + obj.name + ("-"*5) )
                 print(f"DESCRIPTION: {obj.description}")
 
+        elif isinstance(obj, data.Monster):
+            print(f"\nYou found the {self.current_room.monster.name}!\nDESCRIPTION: {self.current_room.monster.description}\n")
+
         elif isinstance(obj, data.Weapon):
             print(("-"*5) + obj.name + "'s Status" + ("-"*5) )
             print(f"DESCRIPTION: {obj.description}\nATTACK BUFF: +{obj.ap}")
@@ -253,7 +256,7 @@ class Game:
         elif action == data.GOTO_ROOM:
             #change room and print room status
             self.move_to_room()
-            self.display_status(self.current_room)
+            self.display_status(self.current_room, True)
 
         elif action == data.USE_ITEM:
             self.use_item()
