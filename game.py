@@ -225,6 +225,7 @@ class Game:
                     print(f"You found {found_item.name}!!")
                     return found_item
 
+
         elif self.current_room.get_ec() > 5:
             if random.randint(1,2) == 1:
                 if random.randint(1,2) == 1:

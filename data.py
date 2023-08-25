@@ -147,11 +147,12 @@ def get_monster(name: str) -> "Room":
 
 
 class Room:
-    def __init__(self, name: str, description: str, monster: object, explored_counter=0):
+    def __init__(self, name: str, description: str, monster: object, max_explored: int, explored_counter=0):
         self.name = name
         self.description = description
         self.explored_counter = explored_counter
         self.monster = monster
+        self.max_explored = max_explored
         
     def get_ec(self):
         return self.explored_counter
@@ -176,11 +177,13 @@ class Room:
     def from_dict(cls, record: dict) -> "Room":
         name = record["name"]
         description = record["description"]
+        max_explored = record["max_explored"]
         if "monster" in record:
             monster = get_monster(record["monster"])
         else:
             monster = False
-        object = cls(name, description, monster)
+            
+        object = cls(name, description, monster, max_explored)
         return object
         
         
@@ -210,4 +213,3 @@ ATTACK = Action("Attack")
 def actionslist() -> list[Action]:
     actionslist = [EXPLORE, GOTO_ROOM, USE_ITEM, ATTACK]
     return actionslist
-
