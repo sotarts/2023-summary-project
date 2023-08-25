@@ -145,9 +145,9 @@ class Game:
         if keyitem.name == "Old Staff Key Card":
             if self.current_room == data.get_room("Forgotten Library"):
                 self.current_room = data.get_room("Abandoned Staff Room")
-                print("You have accessed the staff room... the final boss might be lurking nearby....")
+                print("You have accessed the staff room... the Final Boss might be lurking nearby....")
             else:
-                print("There is no use for this item in this room.")
+                print("There is no use for this item in this room. Perhaps you should go to a different room.....")
 
         if keyitem.name == "Cat":
             if self.current_room == data.get_room("Abandoned Staff Room"):
@@ -155,7 +155,7 @@ class Game:
                 self.display_status(data.get_monster("Final Boss"))
                 self.attack()
             else:
-                print("There is no use for this item in this room.")
+                print("The Final Boss is not near.......")
 
     def pickup_loot(self, monster: object) -> None:
         """Check if monster have loot and add it to the respective inventories"""
@@ -202,7 +202,6 @@ class Game:
             return copy_list
         else:
             if self.current_room.get_monster() != False:
-                print(f"\nYou found the {self.current_room.monster.name}!\nDESCRIPTION: {self.current_room.monster.description}\n")
                 self.display_status(self.current_room.monster)
                 copy_list.remove(data.EXPLORE)
                 copy_list.remove(data.GOTO_ROOM)
@@ -282,11 +281,3 @@ class Game:
             #Check if game over
             self.check_gameover()
             
-
-#TO DO TMR:
-#  ask wanqi to add win and lose statements in data.py instead
-
-#ME:
-# - change the max_explore in respective place
-
-#Write description for rooms
