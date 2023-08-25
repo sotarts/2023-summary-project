@@ -11,9 +11,11 @@ class Game:
         self.gameover = False
         self.current_room = data.get_room("Overgrown Sheltered Courts")
 
+        # Add first weapon; fists into the weapons inventory
         self.player.weapons.add(data.get_weapon("Chemical Thrower"))
 
-    def display_status(self, obj):
+    def display_status(self, obj: object, incremented_desc=False) -> None:
+        """Takes in any object and print the relevant info based on what type the object is."""
         if isinstance(obj, data.Player):
             print(f"HEALTH: {self.player.get_health()}\nCURRENT ROOM: {self.current_room.name}")
 
@@ -30,8 +32,17 @@ class Game:
         #     print(f"DESCRIPTION: {obj.description}\nHEALTH:{obj.health}")
 
         elif isinstance(obj, data.Room):
-            print(("-"*5) + obj.name + ("-"*5) )
-            print(f"DESCRIPTION: {obj.description}")
+            if incremented_desc:
+                print("-----EXPLORED RESULTS-----")
+                # if obj.get_ec() < obj.get_maxexplored():
+                #     pass put the description here
+                # else:
+                #     print("There is nothing left to explore.")
+                    
+                print(obj.description[obj.get_ec()])
+            else:
+                print(("-"*5) + obj.name + ("-"*5) )
+                print(f"DESCRIPTION: {obj.description}")       
 
     def check_gameover(self) -> None:
         """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
@@ -72,10 +83,9 @@ class Game:
         room_data.remove(data.get_room("Abandoned Staff Room"))
         room = self.prompt(room_data, "WHICH ROOM DO YOU WANT TO GO TO?")
         self.current_room = room
-        self.display_status(self.current_room)
-    
+        
     def attack(self) -> None:
-        """WHOLE ATTACKING SEQUENCE """
+        """WHOLE ATTACKING SEQUENCE, attacks monster in current room. """
         #---ATTACK LOOP---
         while self.current_room.monster and self.player.health > 0:
             self.show_layout(self.current_room.monster.slot)
@@ -83,11 +93,11 @@ class Game:
             slot_list = []
             for i in range(1,self.current_room.monster.slot +1):
                 slot_list.append(i)
-            
+
             attack_slot = self.prompt(slot_list,"Choose which square you would like to attack.", False, False)
             chosen_weapon = self.prompt(self.player.weapons.get_inventory(), "Which weapon do you want to use?")
 
-            if attack_slot == random.randint(1,1): #change b to max slot of monster
+            if attack_slot == random.randint(1,self.current_room.monster.slot): #change b to max slot of monster
                 self.current_room.monster.update_health(self.player.ap * chosen_weapon.ap *-1)
                 print(f"You guessed correctly and dealt {self.player.ap * chosen_weapon.ap} damage!")
             else:
@@ -120,14 +130,12 @@ class Game:
 
     def use_healthitem(self, healthitem: object)-> None:
         """Updates the player health using the chosen item"""
-        if healthitem == []:
-            print("You dont have any health items.")
-        else:
-            self.player.healthitems.get_inventory().remove(healthitem)
-            self.player.update_health(healthitem.health)
-            print(f"You used up 1 {healthitem.name} and healed {healthitem.health} HP!")
+        self.player.healthitems.get_inventory().remove(healthitem)
+        self.player.update_health(healthitem.health)
+        print(f"You used up 1 {healthitem.name} and healed {healthitem.health} HP!")
 
     def use_keyitem(self, keyitem:object) -> None:
+        """Takes in the keyitem chosen and use it if possible"""
         if keyitem.name == "Old Staff Key Card":
             if self.current_room == data.get_room("Forgotten Library"):
                 self.current_room = data.get_room("Abandoned Staff Room")
@@ -155,16 +163,17 @@ class Game:
         #         self.player.keyitems.add(self.current_room.monster.item[i])
                 
         #     print(f"+{self.current_room.monster.item[i].name} added to your inventory!")
-        if  monster.item.category == "healthitem":
+        if  monster.item.category == "health item":
             self.player.healthitems.add(monster.item)
             print(f"+ {monster.item.name} added to your inventory!")
 
-        elif monster.item.category == "keyitem":
+        elif monster.item.category == "key item":
             self.player.keyitems.add(monster.item)
             print(f"+ {monster.item.name} added to your inventory!")
             self.display_status(monster.item)
-                
-    def show_layout(self, slot: int):
+        
+    def show_layout(self, slot: int)-> None:
+        """Prints the attacking layout"""
         divider = " |"
         spacer = ((slot*2+ 1 - 7)//2) *" "
         print("\n----------ATTACKING----------")
@@ -186,20 +195,22 @@ class Game:
             copy_list.remove(data.ATTACK)
             return copy_list
         
-        if self.current_room.get_ec() <= 2:
+        if self.current_room.get_ec() <= 2: #self.current_room.monster.get_maxexplored():
             copy_list.remove(data.ATTACK)
             return copy_list
         else:
             if self.current_room.get_monster() != False:
                 print(f"\nYou found the {self.current_room.monster.name}!\nDESCRIPTION: {self.current_room.monster.description}\n")
+                # self.display_status(self.current_room.monster)
                 copy_list.remove(data.EXPLORE)
                 copy_list.remove(data.GOTO_ROOM)
                 return copy_list
             else:
                 copy_list.remove(data.ATTACK)
                 return copy_list
-            
-    def get_randomised_loot(self):
+    
+    def get_randomised_loot(self) -> None:
+        """Adds randomised weapon into players inventory"""
         if self.current_room.get_ec() <= 2:
             if random.randint(1,5) == 1:
                 if random.randint(1,2) == 1:
@@ -240,16 +251,18 @@ class Game:
         #Return Action object
         return action
 
-    def execute_action(self, action):
+    def execute_action(self, action: "Action") -> None:
         """Execute chosen action"""
         if action == data.EXPLORE:
-            print("You have explored the room")
-            self.current_room.increment_ec()
-            # print(self.current_room.description[self.current_room.get_ec()])
+            #Prints description of explore, randomise loot, and increments ec
+            self.display_status(self.current_room, True)
             self.get_randomised_loot()
+            self.current_room.increment_ec()
 
         elif action == data.GOTO_ROOM:
+            #change room and print room status
             self.move_to_room()
+            self.display_status(self.current_room)
 
         elif action == data.USE_ITEM:
             self.use_item()
@@ -257,7 +270,8 @@ class Game:
         elif action == data.ATTACK:
             self.attack()
     
-    def run(self):
+    def run(self) -> None:
+        """Run the game loop"""
         #-----game loop--------
         #welcome message
         data.welcome()
@@ -273,13 +287,14 @@ class Game:
             self.execute_action(action)
             #Check if game over
             self.check_gameover()
-
-
+            
 
 #TO DO TMR:
 #ask wanqi to make add item non duplicable when adding
-# - add max explore for monsters
-## - make sure that the description is working for each room, objs
-# - implement cat for final boss
-#- write docstrings for everything
+# - add maxexplore attribute for room and get_maxexplore() which returns the max explore number
 #  ask wanqi to add win and lose statements in data.py instead
+
+#ME:
+# - change the max_explore in respective place
+
+#Write description for rooms
