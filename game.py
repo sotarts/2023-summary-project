@@ -217,10 +217,6 @@ class Game:
                     found_item = data.healthitems[random.randint(0,len(data.healthitems)-1)]
                     self.player.healthitems.add(found_item)
                     print(f"You found {found_item.name}!!")
-                else:
-                    found_item = data.weapons[random.randint(0,len(data.weapons)-1)]
-                    self.player.weapons.add(found_item)
-                    print(f"You found {found_item.name}!!")
 
         elif self.current_room.get_ec() <= 4:
             if random.randint(1,2) == 1:
@@ -228,20 +224,12 @@ class Game:
                     found_item = data.healthitems[random.randint(0,len(data.healthitems)-1)]
                     self.player.healthitems.add(found_item)
                     print(f"You found {found_item.name}!!")
-                else:
-                    found_item = data.weapons[random.randint(0,len(data.weapons)-1)]
-                    self.player.weapons.add(found_item)
-                    print(f"You found {found_item.name}!!")
 
         elif self.current_room.get_ec() > 5:
             if random.randint(1,2) == 1:
                 if random.randint(1,2) == 1:
                     found_item = data.healthitems[random.randint(0,len(data.healthitems)-1)]
                     self.player.healthitems.add(found_item)
-                    print(f"You found {found_item.name}!!")
-                else:
-                    found_item = data.weapons[random.randint(0,len(data.weapons)-1)]
-                    self.player.weapons.add(found_item)
                     print(f"You found {found_item.name}!!")
                     
     def prompt_valid_actions(self, possible_actions: list["Action"]) -> "Action":
