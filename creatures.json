@@ -2,7 +2,7 @@
     {
         "name": "Maggot-Infested Bird",
         "description": "Just a common bird that has now gained super-bird powers. However, it is now covered in writhing maggots that feast on its decaying flesh. Its wings are tattered, and its movements are sluggish.",
-        "health": 60,
+        "health": 61,
         "ap": 5,
         "item": ["Mutated lighter"],
         "slot": 2
