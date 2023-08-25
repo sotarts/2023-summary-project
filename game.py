@@ -261,6 +261,7 @@ class Game:
             #change room and print room status
             self.move_to_room()
             self.display_status(self.current_room, True)
+            self.current_room.increment_ec()
 
         elif action == data.USE_ITEM:
             self.use_item()
