@@ -3,7 +3,7 @@
     {
       "name": "Basketball Shoe",
       "description": "Years of dirt and sweat has built up in the shoe, causing it to stink up and allowing you to use it as a bomb",
-      "damage": 6,
+      "damage": 5,
         "category": "weapons"
         
     },
