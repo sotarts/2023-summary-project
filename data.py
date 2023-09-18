@@ -1,33 +1,48 @@
 import json
 
+
 def welcome() -> None:
-    print( "Welcome to a Post-Apocalyptic version of NYJC. After oppenheimer dropped the third bomb, Singapore was devastated. You desperately want your A-level results located in the NYJC Staff Room. You reach NYJC only to realise it has been partially destroyed by the explosions. The main gate is overun with mutant creatures, hence you need to enter through the only available entry, the sheltered court face entry system. You have to navigate a post-apocolyptic NYJC overuned with mutant creatures, collect weapons, pick up key items, and ultimately collect your 'A' level certificate from the final boss. ")
+    print(
+        "Welcome to a Post-Apocalyptic version of NYJC. After oppenheimer dropped the third bomb, Singapore was devastated. You desperately want your A-level results located in the NYJC Staff Room. You reach NYJC only to realise it has been partially destroyed by the explosions. The main gate is overun with mutant creatures, hence you need to enter through the only available entry, the sheltered court face entry system. You have to navigate a post-apocolyptic NYJC overuned with mutant creatures, collect weapons, pick up key items, and ultimately collect your 'A' level certificate from the final boss. "
+    )
 
-def win()->None:
-    print("As you clutched your 'A' level certificate, a rush of emotions sweeps you over. This piece of paper represented more than just your academic achievement; it symbolized your indomitable spirit, adaptability, and the unwavering commitment to your dreams even amidst the harshest of circumstances. Your journey through the post-apocalyptic school was not just a quest for a certificate, but a testament to the power of education and the human spirit. Congratulations player, you have beat the Final Boss and collected your 'A' levels certificate.")
 
-def loseboss()-> None:
-    print("With a heavy heart, you stand amidst the debris and shadows of the post-apocalyptic school, your quest to retrieve your 'A' level certificate from the clutches of the final boss having ended in defeat. Despite your long and arduous exploration, your efforts were not enough to overcome the challenges that awaited you within these decaying walls. As you gaze around the abandoned school, the weight of disappointment settles upon your shoulders. The corridors that once echoed with the laughter and footsteps of students now reverberate with the emptiness of a world forever changed. The final boss, a formidable adversary, had proven to be an insurmountable obstacle, guarding the precious certificates within the heart of this fallen institution. You lose.")
+def win() -> None:
+    print(
+        "As you clutched your 'A' level certificate, a rush of emotions sweeps you over. This piece of paper represented more than just your academic achievement; it symbolized your indomitable spirit, adaptability, and the unwavering commitment to your dreams even amidst the harshest of circumstances. Your journey through the post-apocalyptic school was not just a quest for a certificate, but a testament to the power of education and the human spirit. Congratulations player, you have beat the Final Boss and collected your 'A' levels certificate."
+    )
+
+
+def loseboss() -> None:
+    print(
+        "With a heavy heart, you stand amidst the debris and shadows of the post-apocalyptic school, your quest to retrieve your 'A' level certificate from the clutches of the final boss having ended in defeat. Despite your long and arduous exploration, your efforts were not enough to overcome the challenges that awaited you within these decaying walls. As you gaze around the abandoned school, the weight of disappointment settles upon your shoulders. The corridors that once echoed with the laughter and footsteps of students now reverberate with the emptiness of a world forever changed. The final boss, a formidable adversary, had proven to be an insurmountable obstacle, guarding the precious certificates within the heart of this fallen institution. You lose."
+    )
+
 
 def loseothers() -> None:
-    print("Unfortunately, your quest to retrieve your 'A' level certificate has ended and you have died. You recall the trials you faced – the treacherous journey through darkened classrooms, the tense encounters with remnants of security systems, and the labyrinthine corridors that seemed to shift and deceive. Each step you took was a testament to your determination, but alas, the odds were not in your favor this time. With a sigh, you realize that the certificate, a symbol of your achievements and hard work, remains beyond your grasp. You lose.")
-    
-    
+    print(
+        "Unfortunately, your quest to retrieve your 'A' level certificate has ended and you have died. You recall the trials you faced – the treacherous journey through darkened classrooms, the tense encounters with remnants of security systems, and the labyrinthine corridors that seemed to shift and deceive. Each step you took was a testament to your determination, but alas, the odds were not in your favor this time. With a sigh, you realize that the certificate, a symbol of your achievements and hard work, remains beyond your grasp. You lose."
+    )
+
+
 class Player:
+
     def __init__(self):
         self.health = 100
         self.ap = 5
         self.weapons = Inventory("weapons")
         self.keyitems = Inventory("keyitems")
         self.healthitems = Inventory("health")
-        
-    def update_health(self, value: int)-> None:
+
+    def update_health(self, value: int) -> None:
         self.health += value
-        
+
     def get_health(self) -> int:
         return self.health
-    
+
+
 class Inventory:
+
     def __init__(self, category: str):
         self.category = category
         self.contents = []
@@ -37,47 +52,59 @@ class Inventory:
             return
         else:
             self.contents.append(item)
-        
+
     def get_inventory(self) -> dict:
-        return self.contents 
+        return self.contents
 
 
 class Item:
+
     def __init__(self, name, description, category):
         self.name = name
         self.description = description
         self.category = category
-        
+
+
 class Weapon(Item):
+
     def __init__(self, name, description, damage, category):
         super().__init__(name, description, category)
         self.ap = damage
+
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
-        object = cls(record["name"], record["description"], record["damage"], record["category"])
+        object = cls(record["name"], record["description"], record["damage"],
+                     record["category"])
         return object
 
+
 class KeyItem(Item):
+
     def __init__(self, name, description, usage, category):
         super().__init__(name, description, category)
         self.usage = usage
 
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
-        object = cls(record["name"], record["description"], record["usage"], record["category"])
+        object = cls(record["name"], record["description"], record["usage"],
+                     record["category"])
         return object
 
+
 class HealthItem(Item):
+
     def __init__(self, name, description, health, category):
         super().__init__(name, description, category)
         self.health = health
 
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
-        object = cls(record["name"], record["description"], record["healing"], record["category"])
+        object = cls(record["name"], record["description"], record["healing"],
+                     record["category"])
         return object
 
-weapons= []
+
+weapons = []
 keyitems = []
 healthitems = []
 allitems = []
@@ -96,24 +123,30 @@ with open("items.json", "r") as a:
         healthitem = HealthItem.from_dict(healthitem_data)
         healthitems.append(healthitem)
         allitems.append(healthitem)
-        
+
+
 def get_healthitem(name: str) -> "Room":
     for item in healthitems:
         if item.name == name:
             return item
-            
+
+
 def get_keyitem(name: str) -> "Room":
     for item in keyitems:
         if item.name == name:
             return item
 
+
 def get_weapon(name: str) -> "Room":
     for item in weapons:
         if item.name == name:
             return item
-            
+
+
 class Monster:
-    def __init__(self, name: str, description: str, health: int, ap: int, item: "Item", slot: int):
+
+    def __init__(self, name: str, description: str, health: int, ap: int,
+                 item: "Item", slot: int):
         self.name = name
         self.health = health
         self.ap = ap
@@ -121,13 +154,12 @@ class Monster:
         self.item = item
         self.slot = slot
 
-    def update_health(self, value: int)-> None:
+    def update_health(self, value: int) -> None:
         self.health += value
 
-    def get_health(self)-> int:
+    def get_health(self) -> int:
         return self.health
 
-        
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
         if "item" in record:
@@ -138,16 +170,18 @@ class Monster:
                         items.append(value)
         else:
             items = False
-        object = cls(record["name"], record["description"], record["health"], record["ap"], items, record["slot"])
+        object = cls(record["name"], record["description"], record["health"],
+                     record["ap"], items, record["slot"])
         return object
 
-            
+
 monsters = []
 with open("creatures.json", "r") as m:
     monsterlist = json.load(m)
     for record in monsterlist:
         monster = Monster.from_dict(record)
         monsters.append(monster)
+
 
 def get_monster(name: str) -> "Room":
     for monster in monsters:
@@ -156,13 +190,19 @@ def get_monster(name: str) -> "Room":
 
 
 class Room:
-    def __init__(self, name: str, description: list, monster: object, max_explored: int, explored_counter=0):
+
+    def __init__(self,
+                 name: str,
+                 description: list,
+                 monster: object,
+                 max_explored: int,
+                 explored_counter=0):
         self.name = name
         self.description = description
         self.explored_counter = explored_counter
         self.monster = monster
         self.max_explored = max_explored
-        
+
     def get_ec(self):
         return self.explored_counter
 
@@ -171,16 +211,15 @@ class Room:
 
     def add_item(self) -> None:
         print("Sorry you can't do that")
-    
+
     def remove_item(self, name: str) -> None:
         pass
 
     def get_monster(self) -> "Monster":
         return self.monster
-        
+
     def monster_isdead(self) -> None:
         self.monster = False
-
 
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
@@ -209,11 +248,11 @@ class Room:
             monster = get_monster(record["monster"])
         else:
             monster = False
-            
+
         object = cls(name, description, monster, max_explored)
         return object
-        
-        
+
+
 rooms = []
 with open("room.json", "r") as f:
     roomlist = json.load(f)
@@ -221,23 +260,25 @@ with open("room.json", "r") as f:
         room = Room.from_dict(record)
         rooms.append(room)
 
+
 def get_room(name: str) -> Room:
     for room in rooms:
         if room.name == name:
             return room
 
-            
 
 class Action:
+
     def __init__(self, name: str):
         self.name = name
-        
+
+
 EXPLORE = Action("Explore")
 GOTO_ROOM = Action("Go To")
 USE_ITEM = Action("Use Item")
 ATTACK = Action("Attack")
 
+
 def actionslist() -> list[Action]:
     actionslist = [EXPLORE, GOTO_ROOM, USE_ITEM, ATTACK]
     return actionslist
-    
