@@ -243,25 +243,16 @@ class Game:
         print("-" * 30 + "\n")
 
     def get_possible_actions(self) -> list[str]:
-        """Returns a list of possible Action objects"""
-        actions = data.get_actions()
+        """Returns a list of possible actions"""
         if self.current_room == data.get_room(BOSS_ROOM):
-            actions.remove(data.ATTACK)
-            return actions
-
+            return [data.EXPLORE, data.GOTO_ROOM, data.USE_ITEM]
         if not self.current_room.is_fully_visited():
-            actions.remove(data.ATTACK)
-            return actions
-        else:
-            monster = data.get_monster(self.current_room.monster)
-            if monster and not monster.is_dead():
-                print(monster.status())
-                actions.remove(data.EXPLORE)
-                actions.remove(data.GOTO_ROOM)
-                return actions
-            else:
-                actions.remove(data.ATTACK)
-                return actions
+            return [data.EXPLORE, data.GOTO_ROOM, data.USE_ITEM]
+        monster = data.get_monster(self.current_room.monster)
+        if monster and not monster.is_dead():
+            print(monster.status())
+            return [data.ATTACK, data.USE_ITEM]
+        return [data.EXPLORE, data.GOTO_ROOM, data.USE_ITEM]
 
     def get_randomised_loot(self) -> Optional[data.Item]:
         """Determines the chance of returning a random health item"""

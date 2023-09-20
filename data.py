@@ -295,8 +295,3 @@ EXPLORE = "Explore"
 GOTO_ROOM = "Go To"
 USE_ITEM = "Use Item"
 ATTACK = "Attack"
-
-_actions = [EXPLORE, GOTO_ROOM, USE_ITEM, ATTACK]
-
-def get_actions() -> list[str]:
-    return _actions.copy()
