@@ -53,16 +53,41 @@ class Inventory:
 
     def __init__(self, category: str):
         self.category = category
-        self.contents = []
+        self._contents = []
 
     def add(self, item) -> None:
-        if item.name in self.contents:
+        if item.name in self.contents():
             return
         else:
-            self.contents.append(item)
+            self._contents.append(item)
 
-    def get_inventory(self) -> dict:
-        return self.contents
+    def contents(self) -> list[str]:
+        return [item.name for item in self._contents]
+
+    def count(self) -> int:
+        return len(self._contents)
+
+    def get(self, name: str):
+        for item in self._contents:
+            if item.name == name:
+                return name
+
+    def get_inventory(self) -> list:
+        print("Warning: deprecated! use self.contents() to get a list of contents as strs")
+        return self._contents
+
+    def is_empty(self) -> bool:
+        return self.count() == 0
+
+    def remove(self, name: str) -> bool:
+        """Remove item with the given name.
+        Return True if successfully removed, otherwise False
+        """
+        if name not in self.contents():
+            return False
+        index = self.contents().index(name)
+        del self._contents[index]
+        return True
 
 
 class Item:

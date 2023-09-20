@@ -79,7 +79,8 @@ class Game:
                 slot_list.append(i)
 
             attack_slot = self.prompt(slot_list,"Choose which square you would like to attack.", False, False)
-            chosen_weapon = self.prompt(self.player.weapons.get_inventory(), "Which weapon do you want to use?")
+            choice = self.prompt(self.player.weapons.contents(), "Which weapon do you want to use?", False)
+            chosen_weapon = self.player.weapons.get(choice)
 
             print("-----BATTLE RESULT-----")
             if attack_slot == random.randint(1, monster.slot): #change b to max slot of monster
@@ -103,24 +104,28 @@ class Game:
     def use_item(self) -> None:
         item_type = self.prompt(["Health Items", "Key Items"], "WHICH TYPE OF OBJECT DO YOU WANT TO USE?", False)
         if item_type == "Health Items":                 
-            if len(self.player.healthitems.get_inventory()) == 0:
+            if self.player.healthitems.is_empty():
                 print("You do not have any health items")
                 return
-            self.use_healthitem(self.prompt(self.player.healthitems.get_inventory(), "WHICH OBJECT DO YOU WANT TO USE?"))
+            choice = self.prompt(self.player.healthitems.contents(), "WHICH OBJECT DO YOU WANT TO USE?", False)
+            healthitem = self.player.healthitems.get(choice)
+            self.use_healthitem(healthitem)
             
         elif item_type == "Key Items":
-            if len(self.player.keyitems.get_inventory()) == 0:
+            if self.player.keyitems.is_empty():
                 print("You do not have any Key items")
                 return
-            self.use_keyitem(self.prompt(self.player.keyitems.get_inventory(),"WHICH OBJECT DO YOU WANT TO USE?"))
+            choice = self.prompt(self.player.keyitems.contents(),"WHICH OBJECT DO YOU WANT TO USE?")
+            keyitem = self.player.keyitems.get(choice)
+            self.use_keyitem(keyitem)
 
-    def use_healthitem(self, healthitem: object)-> None:
+    def use_healthitem(self, healthitem: data.HealthItem)-> None:
         """Updates the player health using the chosen item"""
-        self.player.healthitems.get_inventory().remove(healthitem)
+        self.player.healthitems.remove(healthitem.name)
         self.player.update_health(healthitem.health)
         print(f"You used up 1 {healthitem.name} and healed {healthitem.health} HP!")
 
-    def use_keyitem(self, keyitem:object) -> None:
+    def use_keyitem(self, keyitem: data.KeyItem) -> None:
         """Takes in the keyitem chosen and use it if possible"""
         if keyitem.name == "Old Staff Key Card":
             if self.current_room == data.get_room("Forgotten Library"):
