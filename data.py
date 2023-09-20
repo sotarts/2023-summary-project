@@ -224,6 +224,19 @@ def get_weapon(name: str) -> Optional["Weapon"]:
             return item
     return None
 
+def get_item(name: str) -> Optional["Item"]:
+    """Search for a health item, key item, or weapon"""
+    item = get_healthitem(name)
+    if item:
+        return item
+    item = get_keyitem(name)
+    if item:
+        return item
+    item = get_weapon(name)
+    if item:
+        return item
+    return None        
+
 def get_monster(name: str) -> Optional["Monster"]:
     for monster in monsters:
         if monster.name == name:
