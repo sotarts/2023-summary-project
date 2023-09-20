@@ -212,9 +212,6 @@ class Room:
     def remove_item(self, name: str) -> None:
         pass
 
-    def monster_isdead(self) -> None:
-        self.monster = False
-
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
         max_visits = len(record["descriptions"])

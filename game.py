@@ -37,7 +37,7 @@ class Game:
                 print(f"DESCRIPTION: {obj.description}")
 
         elif isinstance(obj, data.Monster):
-            print(f"\nYou found the {self.current_room.monster.name}!\nDESCRIPTION: {self.current_room.monster.description}\n")
+            print(f"\nYou found the {obj.name}!\nDESCRIPTION: {obj.description}\n")
 
         elif isinstance(obj, data.Weapon):
             print(("-"*5) + obj.name + "'s Status" + ("-"*5) )
@@ -97,34 +97,35 @@ class Game:
     def attack(self) -> None:
         """WHOLE ATTACKING SEQUENCE, attacks monster in current room. """
         #---ATTACK LOOP---
-        while self.current_room.monster and self.player.health > 0:
-            self.show_layout(self.current_room.monster.slot)
-            dodge_slot = self.prompt([1,2],"You have a chance to dodge, which slot will you like to dodge to?", False, False)
+        monster = data.get_monster(self.current_room.monster)
+        while monster and self.player.health > 0:
+            self.show_layout(monster.slot)
+            dodge_slot = self.prompt([1, 2], "You have a chance to dodge, which slot will you like to dodge to?", False, False)
             slot_list = []
-            for i in range(1,self.current_room.monster.slot +1):
+            for i in range(1, monster.slot + 1):
                 slot_list.append(i)
 
             attack_slot = self.prompt(slot_list,"Choose which square you would like to attack.", False, False)
             chosen_weapon = self.prompt(self.player.weapons.get_inventory(), "Which weapon do you want to use?")
 
             print("-----BATTLE RESULT-----")
-            if attack_slot == random.randint(1,self.current_room.monster.slot): #change b to max slot of monster
-                self.current_room.monster.update_health(self.player.ap * chosen_weapon.ap *-1)
+            if attack_slot == random.randint(1, monster.slot): #change b to max slot of monster
+                monster.update_health(self.player.ap * chosen_weapon.ap *-1)
                 print(f"You guessed correctly and dealt {self.player.ap * chosen_weapon.ap} damage!")
             else:
                 print("Oops, your attack missed the monster..")
                 
-            if self.current_room.monster.get_health() > 0:
+            if monster.get_health() > 0:
                 if random.randint(1,4) == dodge_slot:
-                    self.player.update_health(self.current_room.monster.ap*-1)
-                    print(f"Uh oh, you ran into the monster's attack path, you lost {self.current_room.monster.ap} HP..")
+                    self.player.update_health(monster.ap * -1)
+                    print(f"Uh oh, you ran into the monster's attack path, you lost {monster.ap} HP..")
                 else:
                     print("You managed to dodge the monsters attack successfully!\n")
             else:
                 print("You have killed the monster!!!\n")
                 print("-----SPOILS-----")
-                self.pickup_loot(self.current_room.monster)
-                self.current_room.monster_isdead()
+                self.pickup_loot(monster)
+                monster = None
                 
     def use_item(self) -> None:
         item_type = self.prompt(["Health Items", "Key Items"], "WHICH TYPE OF OBJECT DO YOU WANT TO USE?", False)
@@ -177,15 +178,16 @@ class Game:
             elif monster.items[i].category == "weapons":
                 self.player.weapons.add(monster.items[i])
                 
-            print(f"+{self.current_room.monster.items[i].name} added to your inventory!")
+            print(f"+{monster.items[i].name} added to your inventory!")
             self.display_status(monster.items[i])
 
     def show_layout(self, slot: int)-> None:
         """Prints the attacking layout"""
+        monster = data.get_monster(self.current_room.monster)
         divider = " |"
         spacer = ((slot*2+ 1 - 7)//2) *" "
         print("\n----------ATTACKING----------")
-        print(f"{self.current_room.monster.name} HP: {self.current_room.monster.get_health()}")
+        print(f"{monster.name} HP: {monster.get_health()}")
         print("\t\t"+"_" * (slot*2 + 1))
         print(f"\t\t|{divider * slot}")
         print("\t\t" +" "+ " ".join([str(i) for i in range(1,slot +1)]))
@@ -207,8 +209,9 @@ class Game:
             copy_list.remove(data.ATTACK)
             return copy_list
         else:
-            if self.current_room.monster != False:
-                self.display_status(self.current_room.monster)
+            monster = data.get_monster(self.current_room.monster)
+            if monster != False:
+                self.display_status(monster)
                 copy_list.remove(data.EXPLORE)
                 copy_list.remove(data.GOTO_ROOM)
                 return copy_list
