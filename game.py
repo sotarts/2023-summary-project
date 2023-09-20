@@ -27,7 +27,7 @@ class Game:
             if incremented_desc:
                 print("-----EXPLORED RESULTS-----")
                 if not obj.is_fully_visited():
-                    print(obj.description[obj.get_ec()])
+                    print(obj.description[obj.visit_count])
                     print("")
                     pass
                 else:
@@ -218,7 +218,7 @@ class Game:
     
     def get_randomised_loot(self) -> None:
         """Adds randomised weapon into players inventory"""
-        if self.current_room.get_ec() <= 2:
+        if self.current_room.visit_count <= 2:
             if random.randint(1,5) == 1:
                 if random.randint(1,2) == 1:
                     found_item = data.healthitems[random.randint(0,len(data.healthitems)-1)]
@@ -226,7 +226,7 @@ class Game:
                     print(f"You found {found_item.name}!!")
                     return found_item
 
-        elif self.current_room.get_ec() <= 4:
+        elif self.current_room.visit_count <= 4:
             if random.randint(1,2) == 1:
                 if random.randint(1,2) == 1:
                     found_item = data.healthitems[random.randint(0,len(data.healthitems)-1)]
@@ -235,7 +235,7 @@ class Game:
                     return found_item
 
 
-        elif self.current_room.get_ec() > 5:
+        elif self.current_room.visit_count > 5:
             if random.randint(1,2) == 1:
                 if random.randint(1,2) == 1:
                     found_item = data.healthitems[random.randint(0,len(data.healthitems)-1)]
@@ -256,13 +256,13 @@ class Game:
             #Prints description of explore, randomise loot, and increments ec
             self.display_status(self.current_room, True)
             self.display_status(self.get_randomised_loot())
-            self.current_room.increment_ec()
+            self.current_room.visit()
 
         elif action == data.GOTO_ROOM:
             #change room and print room status
             self.move_to_room()
             self.display_status(self.current_room, True)
-            self.current_room.increment_ec()
+            self.current_room.visit()
 
         elif action == data.USE_ITEM:
             self.use_item()

@@ -192,22 +192,19 @@ class Room:
                  name: str,
                  descriptions: list[str],
                  monster: str,
-                 max_explored: int,
-                 explored_counter=0):
+                 max_visits: int,
+                 visit_count: int = 0):
         self.name = name
         self.descriptions = descriptions
-        self.explored_counter = explored_counter
         self.monster = monster
-        self.max_explored = max_explored
+        self.max_visits = max_visits
+        self.visit_count = visit_count
 
-    def get_ec(self):
-        return self.explored_counter
-
-    def increment_ec(self):
-        self.explored_counter += 1
+    def visit(self):
+        self.visit_count += 1
 
     def is_fully_visited(self) -> bool:
-        return self.explored_counter < self.max_explored
+        return self.visit_count < self.max_visits
 
     def add_item(self) -> None:
         print("Sorry you can't do that")
@@ -223,12 +220,12 @@ class Room:
 
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
-        max_explored = len(record["descriptions"])
+        max_visits = len(record["descriptions"])
 
         object = cls(record["name"],
                      record["descriptions"],
                      record.get("monster", None),
-                     max_explored)
+                     max_visits)
         return object
 
 
