@@ -259,31 +259,23 @@ class Game:
                 actions.remove(data.ATTACK)
                 return actions
 
-    def get_randomised_loot(self) -> None:
-        """Adds randomised weapon into players inventory"""
+    def get_randomised_loot(self) -> Optional[data.Item]:
+        """Determines the chance of returning a random health item"""
+        found_item = None
         if self.current_room.visit_count <= 2:
-            if dice_roll(sides=5, chance=1):
-                if dice_roll(sides=2, chance=1):
-                    found_item = data.get_random_healthitem()
-                    self.player.healthitems.add(found_item)
-                    print(text.found_item(found_item.name)
-                    return found_item
+            if dice_roll(sides=10, chance=1):
+                found_item = data.get_random_healthitem()
 
         elif self.current_room.visit_count <= 4:
-            if dice_roll(sides=2, chance=1:
-                if dice_roll(sides=2, chance=1:
-                    found_item = data.get_random_healthitem()
-                    self.player.healthitems.add(found_item)
-                    print(text.found_item(found_item.name))
-                    return found_item
+            if dice_roll(sides=4, chance=1:
+                found_item = data.get_random_healthitem()
 
-        elif self.current_room.visit_count > 5:
-            if dice_roll(sides=2, chance=1:
-                if dice_roll(sides=2, chance=1:
-                    found_item = data.get_random_healthitem()
-                    self.player.healthitems.add(found_item)
-                    print(text.found_item(found_item.name)
-                    return found_item
+        else:
+            if dice_roll(sides=4, chance=1:
+                found_item = data.get_random_healthitem()
+        if found_item:
+            print(text.found_item(found_item.name)
+        return found_item
 
     def execute_action(self, action: str) -> None:
         """Execute chosen action"""
@@ -291,7 +283,9 @@ class Game:
             #Prints description of explore, randomise loot, and increments ec
             print(self.current_room.status())
             loot = self.get_randomised_loot()
-            print(loot.status())
+            if loot:
+                print(loot.status())
+                self.player.healthitems.add(loot)
             self.current_room.visit()
 
         elif action == data.GOTO_ROOM:
