@@ -8,6 +8,7 @@ import random
 import text
 
 
+# Prompt helpers
 def prompt_valid_choice(options: list[str], question: str, show=True) -> str:
     """Takes in a list of strs and a question, returns the chosen object"""
     if show:
@@ -25,6 +26,14 @@ def prompt_valid_choice(options: list[str], question: str, show=True) -> str:
             print()
     print("")
     return userinput
+
+
+# Combat helpers
+
+def generate_numbers(last: int) -> list[int]:
+    """Return a list of numbers from 1 to last"""
+    assert last > 0
+    return list(range(1, last))
 
 
 START_ROOM = "Overgrown Sheltered Courts"
@@ -76,16 +85,15 @@ class Game:
         monster = data.get_monster(self.current_room.monster)
         while monster and not self.player.is_dead():
             self.show_layout(monster.slot)
-            dodge_slot = prompt_valid_choice([
-                1, 2
-            ], text.prompt_dodge,
-                                     False)
-            slot_list = []
-            for i in range(1, monster.slot + 1):
-                slot_list.append(i)
+            dodge_slot = prompt_valid_choice(
+                generate_numbers(2),
+                text.prompt_dodge,
+                False
+            )
+            attack_slots = generate_numbers(monster.slot + 1)
 
             attack_slot = prompt_valid_choice(
-                slot_list, text.prompt_square,
+                attack_slots, text.prompt_square,
                 False)
             choice = prompt_valid_choice(self.player.weapons.contents(),
                                  text.prompt_weapon)
