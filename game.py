@@ -35,6 +35,42 @@ def generate_numbers(last: int) -> list[int]:
     assert last > 0
     return list(range(1, last))
 
+def dice_roll(sides: int, chance: int) -> bool:
+    """Simulate a dice roll for success.
+
+    Arguments
+    ---------
+    sides: int
+      number of sides the dice has.
+
+    chance: int
+      number of sides that yield success
+
+    Return
+    ------
+    True if successful, False otherwise
+    """
+    assert sides > 1
+    assert chance <= sides
+    return 1 <= random.randint(1, sides) <= chance
+
+def dice_check(sides: int, target: int) -> bool:
+    """Simulate a dice roll for a target value.
+
+    Arguments
+    ---------
+    sides: int
+      number of sides the dice has.
+
+    target: int
+      number to aim for
+
+    Return
+    ------
+    True if dice roll matches target, False otherwise
+    """
+    return random.randint(1, sides) == target
+
 
 START_ROOM = "Overgrown Sheltered Courts"
 START_WEAPON = "Basketball Shoe"
@@ -100,8 +136,7 @@ class Game:
             chosen_weapon = self.player.weapons.get(choice)
 
             print(text.header("BATTLE RESULT", width=23))
-            if attack_slot == random.randint(
-                    1, monster.slot):  #change b to max slot of monster
+            if dice_check(sides=monster.slot, target=attack_slot):
                 dmg = self.player.ap * chosen_weapon.ap
                 monster.take_damage(dmg)
                 print(text.attack_success(dmg))
@@ -109,7 +144,7 @@ class Game:
                 print(text.attack_fail)
 
             if not monster.is_dead():
-                if random.randint(1, 4) == dodge_slot:
+                if dice_check(sides=4, target=dodge):
                     self.player.take_damage(monster.ap)
                     print(text.dodge_fail(monster.ap))
                 else:
@@ -227,24 +262,24 @@ class Game:
     def get_randomised_loot(self) -> None:
         """Adds randomised weapon into players inventory"""
         if self.current_room.visit_count <= 2:
-            if random.randint(1, 5) == 1:
-                if random.randint(1, 2) == 1:
+            if dice_roll(sides=5, chance=1):
+                if dice_roll(sides=2, chance=1):
                     found_item = data.get_random_healthitem()
                     self.player.healthitems.add(found_item)
                     print(text.found_item(found_item.name)
                     return found_item
 
         elif self.current_room.visit_count <= 4:
-            if random.randint(1, 2) == 1:
-                if random.randint(1, 2) == 1:
+            if dice_roll(sides=2, chance=1:
+                if dice_roll(sides=2, chance=1:
                     found_item = data.get_random_healthitem()
                     self.player.healthitems.add(found_item)
                     print(text.found_item(found_item.name))
                     return found_item
 
         elif self.current_room.visit_count > 5:
-            if random.randint(1, 2) == 1:
-                if random.randint(1, 2) == 1:
+            if dice_roll(sides=2, chance=1:
+                if dice_roll(sides=2, chance=1:
                     found_item = data.get_random_healthitem()
                     self.player.healthitems.add(found_item)
                     print(text.found_item(found_item.name)
