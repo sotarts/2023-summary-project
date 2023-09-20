@@ -7,7 +7,7 @@
         "items": [
             "Mutated lighter"
         ],
-        "slot": 2
+        "agility": 2
     },
     {
         "name": "Abhorrently Large Cockroach",
@@ -18,7 +18,7 @@
             "Cat",
             "Rusty Metal Pole"
         ],
-        "slot": 3
+        "agility": 3
     },
     {
         "name": "Lingering Bookworm",
@@ -29,7 +29,7 @@
             "Old Staff Key Card",
             "Chemical Thrower"
         ],
-        "slot": 4
+        "agility": 4
     },
     {
         "name": "Final Boss",
@@ -37,6 +37,6 @@
         "health": 450,
         "ap": 30,
         "items": [],
-        "slot": 6
+        "agility": 6
     }
 ]

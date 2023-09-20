@@ -176,12 +176,12 @@ class HealthItem(Item):
 class Monster(Combatant):
 
     def __init__(self, name: str, description: str, health: int, ap: int,
-                 items: list[str], slot: int):
+                 items: list[str], agility: int):
         super().__init__(health, ap)
         self.name = name
         self.description = description
         self.items = items
-        self.slot = slot
+        self.agility = agility
 
     def status(self) -> str:
         result = f"You found the {self.name}!"
@@ -192,8 +192,8 @@ class Monster(Combatant):
     @classmethod
     def from_dict(cls, record: dict) -> "Monster":
         assert "items" in record, f"Error: {record['name']} does not have items"
-        return cls(record["name"], record["description"], record["health"],
-                     record["ap"], record["items"], record["slot"])
+        # The ** operator unpacks a dict into keyword arguments
+        return cls(**record)
 
 
 class Room:

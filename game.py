@@ -132,38 +132,38 @@ class Game:
         """Prompt player for a position to attack, and a weapon to attack with.
         Return player's choices.
         """
-        attack_slots = generate_numbers(monster.slot)
-        attack_slot = prompt_valid_choice(
-            attack_slots,
+        attack_choice = prompt_valid_choice(
+            generate_numbers(monster.agility),
             text.prompt_square,
             False
         )
         # Suggestion: don't prompt for weapon if there is only one choice
         weapon_choice = prompt_valid_choice(player.weapons.contents(),
                                  text.prompt_weapon)
-        return attack_slot, weapon_choice
+        return attack_choice, weapon_choice
 
     @staticmethod
     def prompt_dodge(player: data.Player, monster: data.Monster) -> int:
         """Prompt player for a position to dodge to.
         Return player's choice.
         """
-        dodge_slot = prompt_valid_choice(
+        dodge_choice = prompt_valid_choice(
             generate_numbers(2),
             text.prompt_dodge,
             False
         )
+        return dodge_choice
 
     def enter_combat(self, player: data.Player, monster: data.Monster) -> None:
         """WHOLE COMBAT SEQUENCE"""
         #---COMBAT LOOP---
         while not player.is_dead():
-            self.show_layout(monster.slot)
-            attack_slot, weapon_choice = self.prompt_attack(player, monster)
+            self.show_layout(monster.agility)
+            attack_choice, weapon_choice = self.prompt_attack(player, monster)
             weapon = player.weapons.get(weapon_choice)
 
             print(text.header("BATTLE RESULT", width=23))
-            if dice_check(sides=monster.slot, target=attack_slot):
+            if dice_check(sides=monster.agility, target=attack_choice):
                 dmg = player.ap * weapon.ap
                 monster.take_damage(dmg)
                 print(text.attack_success(dmg))
@@ -171,8 +171,8 @@ class Game:
                 print(text.attack_fail)
 
             if not monster.is_dead():
-                dodge_slot = self.prompt_dodge(player, monster)
-                if dice_check(sides=4, target=dodge_slot):
+                dodge_choice = self.prompt_dodge(player, monster)
+                if dice_check(sides=4, target=dodge_choice):
                     player.take_damage(monster.ap)
                     print(text.dodge_fail(monster.ap))
                 else:
