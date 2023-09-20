@@ -72,7 +72,7 @@ class Weapon(Item):
         self.ap = damage
 
     @classmethod
-    def from_dict(cls, record: dict) -> "Room":
+    def from_dict(cls, record: dict) -> "Weapon":
         object = cls(record["name"], record["description"], record["damage"],
                      record["category"])
         return object
@@ -85,7 +85,7 @@ class KeyItem(Item):
         self.usage = usage
 
     @classmethod
-    def from_dict(cls, record: dict) -> "Room":
+    def from_dict(cls, record: dict) -> "KeyItem":
         object = cls(record["name"], record["description"], record["usage"],
                      record["category"])
         return object
@@ -98,7 +98,7 @@ class HealthItem(Item):
         self.health = health
 
     @classmethod
-    def from_dict(cls, record: dict) -> "Room":
+    def from_dict(cls, record: dict) -> "HealthItem":
         object = cls(record["name"], record["description"], record["healing"],
                      record["category"])
         return object
@@ -125,28 +125,31 @@ with open("items.json", "r") as a:
         allitems.append(healthitem)
 
 
-def get_healthitem(name: str) -> "Room":
+def get_healthitem(name: str) -> "HealthItem" | None:
     for item in healthitems:
         if item.name == name:
             return item
+    return None
 
 
-def get_keyitem(name: str) -> "Room":
+def get_keyitem(name: str) -> "KeyItem" | None:
     for item in keyitems:
         if item.name == name:
             return item
+    return None
 
 
-def get_weapon(name: str) -> "Room":
+def get_weapon(name: str) -> "Weapon" | None:
     for item in weapons:
         if item.name == name:
             return item
+    return None
 
 
 class Monster:
 
     def __init__(self, name: str, description: str, health: int, ap: int,
-                 item: "Item", slot: int):
+                 item: list, slot: int):
         self.name = name
         self.health = health
         self.ap = ap
@@ -161,15 +164,13 @@ class Monster:
         return self.health
 
     @classmethod
-    def from_dict(cls, record: dict) -> "Room":
+    def from_dict(cls, record: dict) -> "Monster":
+        items = []
         if "item" in record:
-            items = []
             for item in record["item"]:
                 for value in allitems:
                     if value.name == item:
                         items.append(value)
-        else:
-            items = False
         object = cls(record["name"], record["description"], record["health"],
                      record["ap"], items, record["slot"])
         return object
@@ -183,7 +184,7 @@ with open("creatures.json", "r") as m:
         monsters.append(monster)
 
 
-def get_monster(name: str) -> "Room":
+def get_monster(name: str) -> "Monster":
     for monster in monsters:
         if monster.name == name:
             return monster
@@ -261,10 +262,11 @@ with open("room.json", "r") as f:
         rooms.append(room)
 
 
-def get_room(name: str) -> Room:
+def get_room(name: str) -> "Room" | None:
     for room in rooms:
         if room.name == name:
             return room
+    return None
 
 
 class Action:
