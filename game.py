@@ -39,14 +39,6 @@ class Game:
         # Add first weapon; fists into the weapons inventory
         self.player.weapons.add(data.get_weapon("Basketball Shoe"))
 
-    def display_status(self, obj: object) -> None:
-        """Takes in any object and print the relevant info based on what type the object is."""
-        if not obj:
-            return
-        print(obj.status())
-        if isinstance(obj, data.Player):
-            print(f"CURRENT ROOM: {self.current_room.name}")
-
     def check_gameover(self) -> None:
         """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
         if self.player.is_dead():
@@ -152,7 +144,8 @@ class Game:
         if keyitem.name == "Cat":
             if self.current_room == data.get_room("Abandoned Staff Room"):
                 print(text.boss_encounter)
-                self.display_status(data.get_monster("Final Boss"))
+                boss = data.get_monster("Final Boss")
+                print(boss.status())
                 self.attack()
             else:
                 print(text.no_boss_encounter)
@@ -173,7 +166,7 @@ class Game:
                 print(text.item_error(item_name))
                 return
             print(text.take_item(item.name))
-            self.display_status(item)
+            print(item.status())
 
     def show_layout(self, slot: int) -> None:
         """Prints the attacking layout"""
@@ -206,7 +199,7 @@ class Game:
         else:
             monster = data.get_monster(self.current_room.monster)
             if monster and not monster.is_dead():
-                self.display_status(monster)
+                print(monster.status())
                 actions.remove(data.EXPLORE)
                 actions.remove(data.GOTO_ROOM)
                 return actions
@@ -244,14 +237,15 @@ class Game:
         """Execute chosen action"""
         if action == data.EXPLORE:
             #Prints description of explore, randomise loot, and increments ec
-            self.display_status(self.current_room)
-            self.display_status(self.get_randomised_loot())
+            print(self.current_room.status())
+            loot = self.get_randomised_loot()
+            print(loot.status())
             self.current_room.visit()
 
         elif action == data.GOTO_ROOM:
             #change room and print room status
             self.move_to_room()
-            self.display_status(self.current_room)
+            print(self.current_room.status())
             self.current_room.visit()
 
         elif action == data.USE_ITEM:
@@ -268,7 +262,8 @@ class Game:
         while not self.gameover:
             #Display action
             print(text.divider(width=60))
-            self.display_status(self.player)
+            print(self.player.status())
+            print(f"CURRENT ROOM: {self.current_room.name}")
             #Get possible actions
             possible_actions = self.get_possible_actions()
             #Get chosen action
