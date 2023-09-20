@@ -231,15 +231,11 @@ class Game:
             return
         for item_name in monster.items:
             item = data.get_item(item_name)
-            if isinstance(item, data.HealthItem):
-                self.player.healthitems.add(item)
-            elif isinstance(item, data.KeyItem):
-                self.player.keyitems.add(item)
-            elif isinstance(item, data.Weapon):
-                self.player.weapons.add(item)
+            if item:
+                self.player.take(item)
             else:
                 print(text.item_error(item_name))
-                return
+                continue
             print(text.take_item(item.name))
             print(item.status())
 

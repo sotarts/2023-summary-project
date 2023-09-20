@@ -53,6 +53,21 @@ class Player(Combatant):
     def status(self) -> str:
         return f"HEALTH: {self.health}"
 
+    def take(self, item: "Item") -> bool:
+        """Put the given item in player's inventory.
+        Return True if successful, otherwise False.
+        """
+        if isinstance(item, HealthItem):
+            self.player.healthitems.add(item)
+            return True
+        elif isinstance(item, KeyItem):
+            self.player.keyitems.add(item)
+            return True
+        elif isinstance(item, Weapon):
+            self.player.weapons.add(item)
+            return True
+        return False
+
 
 class Inventory:
 
