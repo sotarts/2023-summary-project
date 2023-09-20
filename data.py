@@ -108,48 +108,6 @@ class HealthItem(Item):
         return object
 
 
-weapons = []
-keyitems = []
-healthitems = []
-allitems = []
-
-with open("items.json", "r") as a:
-    items: dict = json.load(a)
-    for weapon_data in items["weapons"]:
-        weapon = Weapon.from_dict(weapon_data)
-        weapons.append(weapon)
-        allitems.append(weapon)
-    for keyitem_data in items["key_items"]:
-        keyitem = KeyItem.from_dict(keyitem_data)
-        keyitems.append(keyitem)
-        allitems.append(keyitem)
-    for healthitem_data in items["health_items"]:
-        healthitem = HealthItem.from_dict(healthitem_data)
-        healthitems.append(healthitem)
-        allitems.append(healthitem)
-
-
-def get_healthitem(name: str) -> Optional["HealthItem "]:
-    for item in healthitems:
-        if item.name == name:
-            return item
-    return None
-
-
-def get_keyitem(name: str) -> Optional["KeyItem"]:
-    for item in keyitems:
-        if item.name == name:
-            return item
-    return None
-
-
-def get_weapon(name: str) -> Optional["Weapon"]:
-    for item in weapons:
-        if item.name == name:
-            return item
-    return None
-
-
 class Monster:
 
     def __init__(self, name: str, description: str, health: int, ap: int,
@@ -175,21 +133,6 @@ class Monster:
         assert "items" in record, f"Error: {record['name']} does not have items"
         return cls(record["name"], record["description"], record["health"],
                      record["ap"], record["items"], record["slot"])
-
-
-monsters = []
-with open("creatures.json", "r") as m:
-    monsterlist = json.load(m)
-    for record in monsterlist:
-        monster = Monster.from_dict(record)
-        monsters.append(monster)
-
-
-def get_monster(name: str) -> Optional["Monster"]:
-    for monster in monsters:
-        if monster.name == name:
-            return monster
-    return None
 
 
 class Room:
@@ -229,13 +172,63 @@ class Room:
         return object
 
 
+weapons = []
+keyitems = []
+healthitems = []
+allitems = []
+monsters = []
 rooms = []
+
+with open("items.json", "r") as a:
+    items: dict = json.load(a)
+for weapon_data in items["weapons"]:
+    weapon = Weapon.from_dict(weapon_data)
+    weapons.append(weapon)
+    allitems.append(weapon)
+for keyitem_data in items["key_items"]:
+    keyitem = KeyItem.from_dict(keyitem_data)
+    keyitems.append(keyitem)
+    allitems.append(keyitem)
+for healthitem_data in items["health_items"]:
+    healthitem = HealthItem.from_dict(healthitem_data)
+    healthitems.append(healthitem)
+    allitems.append(healthitem)
+
+with open("creatures.json", "r") as m:
+    monsterlist = json.load(m)
+for record in monsterlist:
+    monster = Monster.from_dict(record)
+    monsters.append(monster)
+
 with open("room.json", "r") as f:
     roomlist = json.load(f)
-    for record in roomlist:
-        room = Room.from_dict(record)
-        rooms.append(room)
+for record in roomlist:
+    room = Room.from_dict(record)
+    rooms.append(room)
 
+def get_healthitem(name: str) -> Optional["HealthItem"]:
+    for item in healthitems:
+        if item.name == name:
+            return item
+    return None
+
+def get_keyitem(name: str) -> Optional["KeyItem"]:
+    for item in keyitems:
+        if item.name == name:
+            return item
+    return None
+
+def get_weapon(name: str) -> Optional["Weapon"]:
+    for item in weapons:
+        if item.name == name:
+            return item
+    return None
+
+def get_monster(name: str) -> Optional["Monster"]:
+    for monster in monsters:
+        if monster.name == name:
+            return monster
+    return None
 
 def get_room(name: str) -> Optional["Room"]:
     for room in rooms:
