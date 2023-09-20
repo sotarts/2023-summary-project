@@ -39,32 +39,28 @@ class Game:
         else:
             pass
                    
-    def prompt(self, data: list[str], question: str, isObjList=True, show=True) -> str:
+    def prompt(self, options: list[str], question: str, show=True) -> str:
         """Takes in a list of strs and a question, returns the chosen object"""
         if show:
-            if isObjList:
-                for i in range(len(data)):
-                    print(f"{i+1}: {data[i].name}")
-            else:
-                for i in range(len(data)):
-                    print(f"{i+1}: {data[i]}")
+            for i, option in enumerate(options, start=1):
+                print(f"{i}: {option}")
     
         userinput = None
         while not userinput:
-            userinput = input(f"{question} (SELECT A NUMBER): ")
-            if userinput.isdecimal() and int(userinput) < len(data) + 1 and int(userinput) != 0:
-                print("")
-                return data[int(userinput)-1]
+            userinput = input(f"{question} (SELECT A NUMBER): ").strip()
+            if userinput in options:
                 break
             else:
                 userinput = None
                 print("That is not a valid input. Please enter again\n")
+        print("")
+        return userinput
                 
     def move_to_room(self) -> None:
         """Prompts room and update current room based on input of the player"""
         room_names = data.room_names()
         room_names.remove("Abandoned Staff Room")
-        room_name = self.prompt(room_names, "WHICH ROOM DO YOU WANT TO GO TO?", False)
+        room_name = self.prompt(room_names, "WHICH ROOM DO YOU WANT TO GO TO?")
         self.current_room = data.get_room(room_name)
   
     def attack(self) -> None:
@@ -73,13 +69,13 @@ class Game:
         monster = data.get_monster(self.current_room.monster)
         while monster and not self.player.is_dead():
             self.show_layout(monster.slot)
-            dodge_slot = self.prompt([1, 2], "You have a chance to dodge, which slot will you like to dodge to?", False, False)
+            dodge_slot = self.prompt([1, 2], "You have a chance to dodge, which slot will you like to dodge to?", False)
             slot_list = []
             for i in range(1, monster.slot + 1):
                 slot_list.append(i)
 
-            attack_slot = self.prompt(slot_list,"Choose which square you would like to attack.", False, False)
-            choice = self.prompt(self.player.weapons.contents(), "Which weapon do you want to use?", False)
+            attack_slot = self.prompt(slot_list,"Choose which square you would like to attack.", False)
+            choice = self.prompt(self.player.weapons.contents(), "Which weapon do you want to use?")
             chosen_weapon = self.player.weapons.get(choice)
 
             print("-----BATTLE RESULT-----")
@@ -102,12 +98,12 @@ class Game:
                 monster = None
                 
     def use_item(self) -> None:
-        item_type = self.prompt(["Health Items", "Key Items"], "WHICH TYPE OF OBJECT DO YOU WANT TO USE?", False)
+        item_type = self.prompt(["Health Items", "Key Items"], "WHICH TYPE OF OBJECT DO YOU WANT TO USE?")
         if item_type == "Health Items":                 
             if self.player.healthitems.is_empty():
                 print("You do not have any health items")
                 return
-            choice = self.prompt(self.player.healthitems.contents(), "WHICH OBJECT DO YOU WANT TO USE?", False)
+            choice = self.prompt(self.player.healthitems.contents(), "WHICH OBJECT DO YOU WANT TO USE?")
             healthitem = self.player.healthitems.get(choice)
             self.use_healthitem(healthitem)
             
@@ -115,7 +111,7 @@ class Game:
             if self.player.keyitems.is_empty():
                 print("You do not have any Key items")
                 return
-            choice = self.prompt(self.player.keyitems.contents(),"WHICH OBJECT DO YOU WANT TO USE?", False)
+            choice = self.prompt(self.player.keyitems.contents(),"WHICH OBJECT DO YOU WANT TO USE?")
             keyitem = self.player.keyitems.get(choice)
             self.use_keyitem(keyitem)
 
@@ -228,7 +224,7 @@ class Game:
     def prompt_valid_actions(self, possible_actions: list[str]) -> str:
         """Displays possible actions, gets user input and return the action object"""
         #Display and Get user input
-        action = self.prompt(possible_actions, "WHAT DO YOU WANT TO DO?", False)
+        action = self.prompt(possible_actions, "WHAT DO YOU WANT TO DO?")
         #Return Action object
         return action
 
