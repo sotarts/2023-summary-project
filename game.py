@@ -127,7 +127,7 @@ class Game:
         """Update player's location to given room."""
         self.current_room = data.get_room(room_name)
 
-    def attack(self) -> None:
+    def enter_combat(self, player: data.Player, monster: data.Monster) -> None:
         """WHOLE ATTACKING SEQUENCE, attacks monster in current room. """
         #---ATTACK LOOP---
         monster = data.get_monster(self.current_room.monster)
@@ -223,7 +223,7 @@ class Game:
                 print(text.boss_encounter)
                 boss = data.get_monster(BOSS_NAME)
                 print(boss.status())
-                self.attack()
+                self.enter_combat(self.player, boss)
             else:
                 print(text.no_boss_encounter)
 
@@ -313,7 +313,10 @@ class Game:
                 self.use_item(item)
 
         elif choice == action.ATTACK:
-            self.attack()
+            monster =
+             data.get_monster(self.current_room.monster)
+            assert monster is not None, f"It should not have been possible to choose {choice} without a monster. Please report this error."
+            self.enter_combat(self.player, monster)
 
     def run(self) -> None:
         """Run the game loop"""
