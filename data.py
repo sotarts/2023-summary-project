@@ -3,30 +3,6 @@ import random
 from typing import Optional
 
 
-def welcome() -> None:
-    print(
-        "Welcome to a Post-Apocalyptic version of NYJC. After oppenheimer dropped the third bomb, Singapore was devastated. You desperately want your A-level results located in the NYJC Staff Room. You reach NYJC only to realise it has been partially destroyed by the explosions. The main gate is overun with mutant creatures, hence you need to enter through the only available entry, the sheltered court face entry system. You have to navigate a post-apocolyptic NYJC overuned with mutant creatures, collect weapons, pick up key items, and ultimately collect your 'A' level certificate from the final boss. "
-    )
-
-
-def win() -> None:
-    print(
-        "As you clutched your 'A' level certificate, a rush of emotions sweeps you over. This piece of paper represented more than just your academic achievement; it symbolized your indomitable spirit, adaptability, and the unwavering commitment to your dreams even amidst the harshest of circumstances. Your journey through the post-apocalyptic school was not just a quest for a certificate, but a testament to the power of education and the human spirit. Congratulations player, you have beat the Final Boss and collected your 'A' levels certificate."
-    )
-
-
-def loseboss() -> None:
-    print(
-        "With a heavy heart, you stand amidst the debris and shadows of the post-apocalyptic school, your quest to retrieve your 'A' level certificate from the clutches of the final boss having ended in defeat. Despite your long and arduous exploration, your efforts were not enough to overcome the challenges that awaited you within these decaying walls. As you gaze around the abandoned school, the weight of disappointment settles upon your shoulders. The corridors that once echoed with the laughter and footsteps of students now reverberate with the emptiness of a world forever changed. The final boss, a formidable adversary, had proven to be an insurmountable obstacle, guarding the precious certificates within the heart of this fallen institution. You lose."
-    )
-
-
-def loseothers() -> None:
-    print(
-        "Unfortunately, your quest to retrieve your 'A' level certificate has ended and you have died. You recall the trials you faced – the treacherous journey through darkened classrooms, the tense encounters with remnants of security systems, and the labyrinthine corridors that seemed to shift and deceive. Each step you took was a testament to your determination, but alas, the odds were not in your favor this time. With a sigh, you realize that the certificate, a symbol of your achievements and hard work, remains beyond your grasp. You lose."
-    )
-
-
 class Player:
 
     def __init__(self):

@@ -51,13 +51,13 @@ class Game:
         """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
         if self.player.is_dead():
             if self.current_room == data.get_room("Abandoned Staff Room"):
-                data.loseboss()
+                print(text.loseboss())
             else:
-                data.loseothers()
+                print(text.loseothers())
             self.gameover = True
 
         elif data.get_monster("Final Boss").get_health() <= 0:
-            data.win()
+            print(text.win())
             self.gameover = True
         else:
             pass
@@ -269,7 +269,7 @@ class Game:
         """Run the game loop"""
         #-----game loop--------
         #welcome message
-        data.welcome()
+        text.welcome()
         while not self.gameover:
             #Display action
             print(text.divider(width=60))
