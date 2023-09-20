@@ -212,9 +212,6 @@ class Room:
     def remove_item(self, name: str) -> None:
         pass
 
-    def get_monster(self) -> str:
-        return self.monster
-
     def monster_isdead(self) -> None:
         self.monster = False
 
