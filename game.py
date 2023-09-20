@@ -86,27 +86,31 @@ class Game:
 
     def __init__(self) -> None:
         self.player = data.Player(health=100, ap=5)
-        self.gameover = False
         self.current_room = data.get_room(START_ROOM)
         assert self.current_room is not None, "Start room could not be found"
 
         # Add first weapon; fists into the weapons inventory
         self.player.weapons.add(data.get_weapon(START_WEAPON))
 
-    def check_gameover(self) -> None:
-        """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
+    def end_game(self) -> None:
         if self.player.is_dead():
             if self.current_room == data.get_room(BOSS_ROOM):
                 print(text.loseboss())
             else:
                 print(text.loseothers())
-            self.gameover = True
-
         else:
             boss = data.get_monster(BOSS_NAME)
             if boss.is_dead():
                 print(text.win())
-                self.gameover = True
+
+    def gameover(self) -> bool:
+        """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
+        if self.player.is_dead():
+            return True
+        boss = data.get_monster(BOSS_NAME)
+        if boss.is_dead():
+            return True
+        return False
 
     def move_to_room(self) -> None:
         """Prompts room and update current room based on input of the player"""
@@ -305,7 +309,7 @@ class Game:
         #-----game loop--------
         #welcome message
         text.welcome()
-        while not self.gameover:
+        while not self.gameover():
             #Display action
             print(text.divider(width=60))
             print(self.player.status())
@@ -316,5 +320,5 @@ class Game:
             action = prompt_valid_choice(possible_actions, text.prompt_action)
             #Execute action
             self.execute_action(action)
-            #Check if game over
-            self.check_gameover()
+        # End the game
+        self.end_game()
