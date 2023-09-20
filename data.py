@@ -5,11 +5,13 @@ from typing import Optional
 
 class Combatant:
     """Combatants can take damage in battle, and die.
+    Agility determines the likelihood of combatant getting hit.
 
     Attributes
     ----------
     + health: int
     + ap: int
+    + agility: int
 
     Methods
     -------
@@ -17,9 +19,10 @@ class Combatant:
     + heal(amt: int) -> None
     + take_damage(dmg: int) -> None
     """
-    def __init__(self, health: int, ap: int):
+    def __init__(self, health: int, ap: int, ability: int):
         self.health = health
         self.ap = ap
+        self.agility = agility
 
     def __repr__(self) -> str:
         return f"{self.__class__.__name__}(health={self.health}, ap={self.ap})"
@@ -44,8 +47,8 @@ class Combatant:
 
 class Player(Combatant):
 
-    def __init__(self, health: int, ap: int):
-        super().__init__(health, ap)
+    def __init__(self, health: int, ap: int, agility: int):
+        super().__init__(health, ap, agility)
         self.weapons = Inventory("weapons")
         self.keyitems = Inventory("keyitems")
         self.healthitems = Inventory("health")
@@ -177,11 +180,10 @@ class Monster(Combatant):
 
     def __init__(self, name: str, description: str, health: int, ap: int,
                  items: list[str], agility: int):
-        super().__init__(health, ap)
+        super().__init__(health, ap, agility)
         self.name = name
         self.description = description
         self.items = items
-        self.agility = agility
 
     def status(self) -> str:
         result = f"You found the {self.name}!"

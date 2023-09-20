@@ -148,7 +148,7 @@ class Game:
         Return player's choice.
         """
         dodge_choice = prompt_valid_choice(
-            generate_numbers(2),
+            generate_numbers(player.agility),
             text.prompt_dodge,
             False
         )
@@ -172,7 +172,7 @@ class Game:
 
             if not monster.is_dead():
                 dodge_choice = self.prompt_dodge(player, monster)
-                if dice_check(sides=4, target=dodge_choice):
+                if dice_check(sides=player.agility, target=dodge_choice):
                     player.take_damage(monster.ap)
                     print(text.dodge_fail(monster.ap))
                 else:
