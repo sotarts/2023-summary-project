@@ -39,8 +39,8 @@ class Game:
         else:
             pass
                    
-    def prompt(self, data:list[object], question:str, isObjList=True, show=True) -> object:
-        """Takes in a list of object and a question, returns the chosen object"""
+    def prompt(self, data: list[str], question: str, isObjList=True, show=True) -> str:
+        """Takes in a list of strs and a question, returns the chosen object"""
         if show:
             if isObjList:
                 for i in range(len(data)):
@@ -62,10 +62,10 @@ class Game:
                 
     def move_to_room(self) -> None:
         """Prompts room and update current room based on input of the player"""
-        room_data = data.get_rooms()
-        room_data.remove(data.get_room("Abandoned Staff Room"))
-        room = self.prompt(room_data, "WHICH ROOM DO YOU WANT TO GO TO?")
-        self.current_room = room
+        room_names = data.room_names()
+        room_names.remove("Abandoned Staff Room")
+        room_name = self.prompt(room_names, "WHICH ROOM DO YOU WANT TO GO TO?", False)
+        self.current_room = data.get_room(room_name)
   
     def attack(self) -> None:
         """WHOLE ATTACKING SEQUENCE, attacks monster in current room. """

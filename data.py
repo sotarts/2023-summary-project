@@ -274,8 +274,8 @@ def get_monster(name: str) -> Optional["Monster"]:
 def get_room(name: str) -> Optional["Room"]:
     return rooms.get(name, None)
 
-def get_rooms() -> list["Room"]:
-    return rooms.copy()
+def room_names() -> list[str]:
+    return list(rooms.keys())
 
 
 class Action:
