@@ -48,10 +48,6 @@ class Inventory:
             if item.name == name:
                 return name
 
-    def get_inventory(self) -> list:
-        print("Warning: deprecated! use self.contents() to get a list of contents as strs")
-        return self._contents
-
     def is_empty(self) -> bool:
         return self.count() == 0
 
