@@ -240,11 +240,6 @@ class Game:
                     print(text.found_item(found_item.name)
                     return found_item
 
-    def prompt_valid_actions(self, possible_actions: list[str]) -> str:
-        """Displays possible actions, gets user input and return the action object"""
-        action = prompt_valid_choice(possible_actions, text.prompt_action)
-        return action
-
     def execute_action(self, action: str) -> None:
         """Execute chosen action"""
         if action == data.EXPLORE:
@@ -277,7 +272,7 @@ class Game:
             #Get possible actions
             possible_actions = self.get_possible_actions()
             #Get chosen action
-            action = self.prompt_valid_actions(possible_actions)
+            action = prompt_valid_choice(possible_actions, text.prompt_action)
             #Execute action
             self.execute_action(action)
             #Check if game over
