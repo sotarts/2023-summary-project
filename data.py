@@ -206,6 +206,9 @@ class Room:
     def increment_ec(self):
         self.explored_counter += 1
 
+    def is_fully_visited(self) -> bool:
+        return self.explored_counter < self.max_explored
+
     def add_item(self) -> None:
         print("Sorry you can't do that")
 

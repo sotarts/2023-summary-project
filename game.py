@@ -11,6 +11,7 @@ class Game:
         self.player = data.Player()
         self.gameover = False
         self.current_room = data.get_room("Overgrown Sheltered Courts")
+        assert self.current_room is not None, "Start room could not be found"
 
         # Add first weapon; fists into the weapons inventory
         self.player.weapons.add(data.get_weapon("Basketball Shoe"))
@@ -25,7 +26,7 @@ class Game:
         elif isinstance(obj, data.Room):
             if incremented_desc:
                 print("-----EXPLORED RESULTS-----")
-                if obj.get_ec() < obj.max_explored:
+                if not obj.is_fully_visited():
                     print(obj.description[obj.get_ec()])
                     print("")
                     pass
@@ -202,7 +203,7 @@ class Game:
             copy_list.remove(data.ATTACK)
             return copy_list
         
-        if self.current_room.get_ec() <= self.current_room.max_explored:
+        if not self.current_room.is_fully_visited():
             copy_list.remove(data.ATTACK)
             return copy_list
         else:
