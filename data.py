@@ -66,16 +66,15 @@ class Inventory:
 
 class Item:
 
-    def __init__(self, name, description, category):
+    def __init__(self, name, description):
         self.name = name
         self.description = description
-        self.category = category
 
 
 class Weapon(Item):
 
-    def __init__(self, name, description, damage, category):
-        super().__init__(name, description, category)
+    def __init__(self, name, description, damage):
+        super().__init__(name, description)
         self.ap = damage
 
     def status(self) -> str:
@@ -88,15 +87,14 @@ class Weapon(Item):
 
     @classmethod
     def from_dict(cls, record: dict) -> "Weapon":
-        object = cls(record["name"], record["description"], record["damage"],
-                     record["category"])
+        object = cls(record["name"], record["description"], record["damage"])
         return object
 
 
 class KeyItem(Item):
 
-    def __init__(self, name, description, usage, category):
-        super().__init__(name, description, category)
+    def __init__(self, name, description, usage):
+        super().__init__(name, description)
         self.usage = usage
 
     def status(self) -> str:
@@ -109,15 +107,14 @@ class KeyItem(Item):
 
     @classmethod
     def from_dict(cls, record: dict) -> "KeyItem":
-        object = cls(record["name"], record["description"], record["usage"],
-                     record["category"])
+        object = cls(record["name"], record["description"], record["usage"])
         return object
 
 
 class HealthItem(Item):
 
-    def __init__(self, name, description, health, category):
-        super().__init__(name, description, category)
+    def __init__(self, name, description, health):
+        super().__init__(name, description)
         self.health = health
 
     def status(self) -> str:
@@ -130,8 +127,7 @@ class HealthItem(Item):
     
     @classmethod
     def from_dict(cls, record: dict) -> "HealthItem":
-        object = cls(record["name"], record["description"], record["healing"],
-                     record["category"])
+        object = cls(record["name"], record["description"], record["healing"])
         return object
 
 

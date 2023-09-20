@@ -3,60 +3,51 @@
         {
             "name": "Basketball Shoe",
             "description": "Years of dirt and sweat has built up in the shoe, causing it to stink up and allowing you to use it as a bomb",
-            "damage": 5,
-            "category": "weapons"
+            "damage": 5
         },
         {
             "name": "Mutated lighter",
             "description": "A old lighter used by kitchen staff that has evolved to become a flame thrower.",
-            "damage": 8,
-            "category": "weapons"
+            "damage": 8
         },
         {
             "name": "Rusty Metal Pole",
             "description": "A makeshift melee weapon, once part of the school's plumbing system.",
-            "damage": 10,
-            "category": "weapons"
+            "damage": 10
         },
         {
             "name": "Chemical Thrower",
             "description": "A modified fire extinguisher that sprays deadly chemicals.",
-            "damage": 12,
-            "category": "weapons"
+            "damage": 12
         }
     ],
     "key_items": [
         {
             "name": "Old Staff Key Card",
             "description": "An old staff room keycard that belonged to Mrs. A that grants access to a hidden room.",
-            "usage": "Accessing secure systems.",
-            "category": "key_item"
+            "usage": "Accessing secure systems."
         },
         {
             "name": "Cat",
             "description": "This is the  Mr Low's precious cat! What is it doing here?!",
-            "usage": "Portable Meower?",
-            "category": "key_item"
+            "usage": "Portable Meower?"
         }
     ],
     "health_items": [
         {
             "name": "Medkit",
             "description": "A compact medical kit containing bandages, antiseptics, and painkillers.",
-            "healing": 25,
-            "category": "health_item"
+            "healing": 25
         },
         {
             "name": "Canned School Food",
             "description": "School lunches that are non-perishable and can help you curb your hunger.",
-            "healing": 20,
-            "category": "health_item"
+            "healing": 20
         },
         {
             "name": "Bio-Stimulant",
             "description": "An experimental stimulant from the Science Labs that instantly restores a small amount of health.",
-            "healing": 20,
-            "category": "health_item"
+            "healing": 20
         }
     ]
 }
