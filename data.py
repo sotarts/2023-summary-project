@@ -1,4 +1,5 @@
 import json
+from typing import Optional
 
 
 def welcome() -> None:
@@ -125,21 +126,21 @@ with open("items.json", "r") as a:
         allitems.append(healthitem)
 
 
-def get_healthitem(name: str) -> "HealthItem" | None:
+def get_healthitem(name: str) -> Optional["HealthItem "]:
     for item in healthitems:
         if item.name == name:
             return item
     return None
 
 
-def get_keyitem(name: str) -> "KeyItem" | None:
+def get_keyitem(name: str) -> Optional["KeyItem"]:
     for item in keyitems:
         if item.name == name:
             return item
     return None
 
 
-def get_weapon(name: str) -> "Weapon" | None:
+def get_weapon(name: str) -> Optional["Weapon"]:
     for item in weapons:
         if item.name == name:
             return item
@@ -178,7 +179,7 @@ with open("creatures.json", "r") as m:
         monsters.append(monster)
 
 
-def get_monster(name: str) -> "Monster" | None:
+def get_monster(name: str) -> Optional["Monster"]:
     for monster in monsters:
         if monster.name == name:
             return monster
@@ -189,12 +190,12 @@ class Room:
 
     def __init__(self,
                  name: str,
-                 description: list,
-                 monster: object,
+                 descriptions: list[str],
+                 monster: str,
                  max_explored: int,
                  explored_counter=0):
         self.name = name
-        self.description = description
+        self.descriptions = descriptions
         self.explored_counter = explored_counter
         self.monster = monster
         self.max_explored = max_explored
@@ -211,7 +212,7 @@ class Room:
     def remove_item(self, name: str) -> None:
         pass
 
-    def get_monster(self) -> "Monster":
+    def get_monster(self) -> str:
         return self.monster
 
     def monster_isdead(self) -> None:
@@ -219,33 +220,12 @@ class Room:
 
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
-        name = record["name"]
-        description = []
-        description1 = record["description"]
-        description.append(description1)
-        description2 = record["description2"]
-        description.append(description2)
-        description3 = record["description3"]
-        description.append(description3)
-        if "description4" in record:
-            description4 = record["description4"]
-            description.append(description4)
-        if "description5" in record:
-            description5 = record["description5"]
-            description.append(description5)
-        if "description6" in record:
-            description6 = record["description6"]
-            description.append(description6)
-        if "description7" in record:
-            description7 = record["description7"]
-            description.append(description7)
         max_explored = record["max_explored"]
-        if "monster" in record:
-            monster = get_monster(record["monster"])
-        else:
-            monster = False
 
-        object = cls(name, description, monster, max_explored)
+        object = cls(record["name"],
+                     record["descriptions"],
+                     record.get("monster", None),
+                     max_explored)
         return object
 
 
@@ -257,7 +237,7 @@ with open("room.json", "r") as f:
         rooms.append(room)
 
 
-def get_room(name: str) -> "Room" | None:
+def get_room(name: str) -> Optional["Room"]:
     for room in rooms:
         if room.name == name:
             return room
