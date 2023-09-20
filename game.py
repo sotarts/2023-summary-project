@@ -7,7 +7,7 @@ import random
 
 class Game:
     """Encapsulates the main game"""
-    def __init__(self)-> None:
+    def __init__(self) -> None:
         self.player = data.Player()
         self.gameover = False
         self.current_room = data.get_room("Overgrown Sheltered Courts")
@@ -195,7 +195,7 @@ class Game:
         print(f"Your HP: {self.player.get_health()}")
         print("-"*30+"\n")
 
-    def get_possible_actions(self) -> list["Action"]:
+    def get_possible_actions(self) -> list[data.Action]:
         """Returns a list of possible Action objects"""
         copy_list = data.actionslist().copy()
         if self.current_room == data.get_room("Abandoned Staff Room"):
@@ -242,14 +242,14 @@ class Game:
                     print(f"You found {found_item.name}!!")
                     return found_item
                     
-    def prompt_valid_actions(self, possible_actions: list["Action"]) -> "Action":
+    def prompt_valid_actions(self, possible_actions: list[data.Action]) -> data.Action:
         """Displays possible actions, gets user input and return the action object"""
         #Display and Get user input
         action = self.prompt(possible_actions, "WHAT DO YOU WANT TO DO?")
         #Return Action object
         return action
 
-    def execute_action(self, action: "Action") -> None:
+    def execute_action(self, action: data.Action) -> None:
         """Execute chosen action"""
         if action == data.EXPLORE:
             #Prints description of explore, randomise loot, and increments ec
