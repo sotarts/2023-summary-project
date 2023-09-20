@@ -27,28 +27,37 @@ def prompt_valid_choice(options: list[str], question: str, show=True) -> str:
     return userinput
 
 
+START_ROOM = "Overgrown Sheltered Courts"
+START_WEAPON = "Basketball Shoe"
+BOSS_ROOM = "Abandoned Staff Room"
+BOSS_KEY = "Cat"
+BOSS_NAME = "Final Boss"
+GATE_ROOM = "Forgotten Library"
+GATE_KEY = "Old Staff Key Card"
+
+
 class Game:
     """Encapsulates the main game"""
 
     def __init__(self) -> None:
         self.player = data.Player()
         self.gameover = False
-        self.current_room = data.get_room("Overgrown Sheltered Courts")
+        self.current_room = data.get_room(START_ROOM)
         assert self.current_room is not None, "Start room could not be found"
 
         # Add first weapon; fists into the weapons inventory
-        self.player.weapons.add(data.get_weapon("Basketball Shoe"))
+        self.player.weapons.add(data.get_weapon(START_WEAPON))
 
     def check_gameover(self) -> None:
         """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
         if self.player.is_dead():
-            if self.current_room == data.get_room("Abandoned Staff Room"):
+            if self.current_room == data.get_room(BOSS_ROOM):
                 print(text.loseboss())
             else:
                 print(text.loseothers())
             self.gameover = True
 
-        elif data.get_monster("Final Boss").get_health() <= 0:
+        elif data.get_monster(BOSS_NAME).get_health() <= 0:
             print(text.win())
             self.gameover = True
         else:
@@ -57,7 +66,7 @@ class Game:
     def move_to_room(self) -> None:
         """Prompts room and update current room based on input of the player"""
         room_names = data.room_names()
-        room_names.remove("Abandoned Staff Room")
+        room_names.remove(BOSS_ROOM)
         room_name = prompt_valid_choice(room_names, text.prompt_room)
         self.current_room = data.get_room(room_name)
 
@@ -134,17 +143,17 @@ class Game:
 
     def use_keyitem(self, keyitem: data.KeyItem) -> None:
         """Takes in the keyitem chosen and use it if possible"""
-        if keyitem.name == "Old Staff Key Card":
-            if self.current_room == data.get_room("Forgotten Library"):
-                self.current_room = data.get_room("Abandoned Staff Room")
+        if keyitem.name == GATE_KEY:
+            if self.current_room == data.get_room(GATE_ROOM):
+                self.current_room = data.get_room(BOSS_ROOM)
                 print(text.use_boss_key)
             else:
                 print(text.use_wrong_key)
 
-        if keyitem.name == "Cat":
-            if self.current_room == data.get_room("Abandoned Staff Room"):
+        if keyitem.name == BOSS_KEY:
+            if self.current_room == data.get_room(BOSS_ROOM):
                 print(text.boss_encounter)
-                boss = data.get_monster("Final Boss")
+                boss = data.get_monster(BOSS_NAME)
                 print(boss.status())
                 self.attack()
             else:
@@ -189,7 +198,7 @@ class Game:
     def get_possible_actions(self) -> list[str]:
         """Returns a list of possible Action objects"""
         actions = data.get_actions()
-        if self.current_room == data.get_room("Abandoned Staff Room"):
+        if self.current_room == data.get_room(BOSS_ROOM):
             actions.remove(data.ATTACK)
             return actions
 
