@@ -53,7 +53,7 @@ class Game:
 
     def check_gameover(self) -> None:
         """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
-        if self.player.health <= 0:
+        if self.player.is_dead():
             if self.current_room == data.get_room("Abandoned Staff Room"):
                 data.loseboss()
             else:
@@ -98,7 +98,7 @@ class Game:
         """WHOLE ATTACKING SEQUENCE, attacks monster in current room. """
         #---ATTACK LOOP---
         monster = data.get_monster(self.current_room.monster)
-        while monster and self.player.health > 0:
+        while monster and not self.player.is_dead():
             self.show_layout(monster.slot)
             dodge_slot = self.prompt([1, 2], "You have a chance to dodge, which slot will you like to dodge to?", False, False)
             slot_list = []
@@ -210,7 +210,7 @@ class Game:
             return copy_list
         else:
             monster = data.get_monster(self.current_room.monster)
-            if monster != False:
+            if not monster.is_dead():
                 self.display_status(monster)
                 copy_list.remove(data.EXPLORE)
                 copy_list.remove(data.GOTO_ROOM)

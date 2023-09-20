@@ -35,6 +35,9 @@ class Player:
         self.keyitems = Inventory("keyitems")
         self.healthitems = Inventory("health")
 
+    def is_dead(self) -> bool:
+        return self.health <= 0
+
     def update_health(self, value: int) -> None:
         self.health += value
 
@@ -157,6 +160,9 @@ class Monster:
         self.description = description
         self.items = items
         self.slot = slot
+
+    def is_dead(self) -> bool:
+        return self.health <= 0
 
     def update_health(self, value: int) -> None:
         self.health += value
