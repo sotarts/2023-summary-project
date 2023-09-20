@@ -16,28 +16,13 @@ class Game:
         # Add first weapon; fists into the weapons inventory
         self.player.weapons.add(data.get_weapon("Basketball Shoe"))
 
-    def display_status(self, obj: object, incremented_desc=False) -> None:
+    def display_status(self, obj: object) -> None:
         """Takes in any object and print the relevant info based on what type the object is."""
         if not obj:
             return
+        print(obj.status())
         if isinstance(obj, data.Player):
-            print(obj.status)
             print(f"CURRENT ROOM: {self.current_room.name}")
-
-        elif isinstance(obj, data.Room):
-            print(obj.status())
-
-        elif isinstance(obj, data.Monster):
-            print(obj.status())
-
-        elif isinstance(obj, data.Weapon):
-            print(obj.status())
-
-        elif obj.category == "key_item":
-            print(obj.status())
-
-        elif obj.category == "health_item":
-            print(obj.status())
 
     def check_gameover(self) -> None:
         """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
