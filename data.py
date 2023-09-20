@@ -216,7 +216,6 @@ class Room:
 weapons = []
 keyitems = []
 healthitems = []
-allitems = []
 monsters = []
 rooms = []
 
@@ -225,15 +224,12 @@ with open("items.json", "r") as a:
 for weapon_data in items["weapons"]:
     weapon = Weapon.from_dict(weapon_data)
     weapons.append(weapon)
-    allitems.append(weapon)
 for keyitem_data in items["key_items"]:
     keyitem = KeyItem.from_dict(keyitem_data)
     keyitems.append(keyitem)
-    allitems.append(keyitem)
 for healthitem_data in items["health_items"]:
     healthitem = HealthItem.from_dict(healthitem_data)
     healthitems.append(healthitem)
-    allitems.append(healthitem)
 
 with open("creatures.json", "r") as m:
     monsterlist = json.load(m)
