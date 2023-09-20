@@ -213,56 +213,47 @@ class Room:
         return object
 
 
-weapons = []
-keyitems = []
-healthitems = []
-monsters = []
-rooms = []
+weapons = {}
+keyitems = {}
+healthitems = {}
+monsters = {}
+rooms = {}
 
 with open("items.json", "r") as a:
     items: dict = json.load(a)
 for weapon_data in items["weapons"]:
     weapon = Weapon.from_dict(weapon_data)
-    weapons.append(weapon)
+    weapons[weapon.name] = weapon
 for keyitem_data in items["key_items"]:
     keyitem = KeyItem.from_dict(keyitem_data)
-    keyitems.append(keyitem)
+    keyitems[keyitem.name] = keyitem
 for healthitem_data in items["health_items"]:
     healthitem = HealthItem.from_dict(healthitem_data)
-    healthitems.append(healthitem)
+    healthitems[healthitem.name] = healthitem
 
 with open("creatures.json", "r") as m:
     monsterlist = json.load(m)
 for record in monsterlist:
     monster = Monster.from_dict(record)
-    monsters.append(monster)
+    monsters[monster.name] = monster
 
 with open("room.json", "r") as f:
     roomlist = json.load(f)
 for record in roomlist:
     room = Room.from_dict(record)
-    rooms.append(room)
+    rooms[room.name] = room
 
 def get_healthitem(name: str) -> Optional["HealthItem"]:
-    for item in healthitems:
-        if item.name == name:
-            return item
-    return None
+    return healthitems.get(name, None)
 
 def get_random_healthitem() -> "HealthItem":
-    return random.choice(healthitems)
+    return random.choice(healthitems.values())
 
 def get_keyitem(name: str) -> Optional["KeyItem"]:
-    for item in keyitems:
-        if item.name == name:
-            return item
-    return None
+    return keyitems.get(name, None)
 
 def get_weapon(name: str) -> Optional["Weapon"]:
-    for item in weapons:
-        if item.name == name:
-            return item
-    return None
+    return weapons.get(name, None)
 
 def get_item(name: str) -> Optional["Item"]:
     """Search for a health item, key item, or weapon"""
@@ -278,18 +269,12 @@ def get_item(name: str) -> Optional["Item"]:
     return None        
 
 def get_monster(name: str) -> Optional["Monster"]:
-    for monster in monsters:
-        if monster.name == name:
-            return monster
-    return None
+    return monsters.get(name, None)
 
 def get_room(name: str) -> Optional["Room"]:
-    for room in rooms:
-        if room.name == name:
-            return room
-    return None
+    return rooms.get(name, None)
 
-def get_rooms() -> list[Room]:
+def get_rooms() -> list["Room"]:
     return rooms.copy()
 
 
