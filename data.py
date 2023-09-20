@@ -240,36 +240,33 @@ for record in roomlist:
     room = Room.from_dict(record)
     rooms[room.name] = room
 
-def get_healthitem(name: str) -> Optional["HealthItem"]:
-    return healthitems.get(name, None)
+def get_healthitem(name: str) -> "HealthItem":
+    return healthitems[name]
 
 def get_random_healthitem() -> "HealthItem":
-    return random.choice(healthitems.values())
+    return random.choice(tuple(healthitems.values()))
 
-def get_keyitem(name: str) -> Optional["KeyItem"]:
-    return keyitems.get(name, None)
+def get_keyitem(name: str) -> "KeyItem":
+    return keyitems[name]
 
-def get_weapon(name: str) -> Optional["Weapon"]:
-    return weapons.get(name, None)
+def get_weapon(name: str) -> "Weapon":
+    return weapons[name]
 
-def get_item(name: str) -> Optional["Item"]:
+def get_item(name: str) -> "Item":
     """Search for a health item, key item, or weapon"""
-    item = get_healthitem(name)
-    if item:
-        return item
-    item = get_keyitem(name)
-    if item:
-        return item
-    item = get_weapon(name)
-    if item:
-        return item
-    return None        
+    if name in healthitems:
+        return get_healthitem(name)
+    if name in keyitems:
+        return get_keyitem(name)
+    if name in weapons:
+        return get_weapon(name)
+    raise KeyError(f"{name}: No such item")
 
-def get_monster(name: str) -> Optional["Monster"]:
-    return monsters.get(name, None)
+def get_monster(name: str) -> "Monster":
+    return monsters[name]
 
-def get_room(name: str) -> Optional["Room"]:
-    return rooms.get(name, None)
+def get_room(name: str) -> "Room":
+    return rooms[name]
 
 def room_names() -> list[str]:
     return list(rooms.keys())
