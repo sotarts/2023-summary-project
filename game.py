@@ -144,7 +144,7 @@ class Game:
     def use_keyitem(self, keyitem: data.KeyItem) -> None:
         """Takes in the keyitem chosen and use it if possible"""
         if keyitem.name == GATE_KEY:
-            if self.current_room == data.get_room(GATE_ROOM):
+            if self.current_room == data.get_room(GATE_ROOM).name:
                 self.current_room = data.get_room(BOSS_ROOM)
                 print(text.use_boss_key)
             else:
