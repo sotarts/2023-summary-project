@@ -143,6 +143,7 @@ class Game:
             attack_slot = prompt_valid_choice(
                 attack_slots, text.prompt_square,
                 False)
+            # Suggestion: don't prompt for weapon if there is only one choice
             choice = prompt_valid_choice(self.player.weapons.contents(),
                                  text.prompt_weapon)
             chosen_weapon = self.player.weapons.get(choice)
