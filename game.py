@@ -62,7 +62,7 @@ class Game:
                 
     def move_to_room(self) -> None:
         """Prompts room and update current room based on input of the player"""
-        room_data = data.rooms.copy()
+        room_data = data.get_rooms()
         room_data.remove(data.get_room("Abandoned Staff Room"))
         room = self.prompt(room_data, "WHICH ROOM DO YOU WANT TO GO TO?")
         self.current_room = room
@@ -198,7 +198,7 @@ class Game:
         if self.current_room.visit_count <= 2:
             if random.randint(1,5) == 1:
                 if random.randint(1,2) == 1:
-                    found_item = data.healthitems[random.randint(0,len(data.healthitems)-1)]
+                    found_item = data.get_random_healthitem()
                     self.player.healthitems.add(found_item)
                     print(f"You found {found_item.name}!!")
                     return found_item
@@ -206,7 +206,7 @@ class Game:
         elif self.current_room.visit_count <= 4:
             if random.randint(1,2) == 1:
                 if random.randint(1,2) == 1:
-                    found_item = data.healthitems[random.randint(0,len(data.healthitems)-1)]
+                    found_item = data.get_random_healthitem()
                     self.player.healthitems.add(found_item)
                     print(f"You found {found_item.name}!!")
                     return found_item
@@ -215,7 +215,7 @@ class Game:
         elif self.current_room.visit_count > 5:
             if random.randint(1,2) == 1:
                 if random.randint(1,2) == 1:
-                    found_item = data.healthitems[random.randint(0,len(data.healthitems)-1)]
+                    found_item = data.get_random_healthitem()
                     self.player.healthitems.add(found_item)
                     print(f"You found {found_item.name}!!")
                     return found_item

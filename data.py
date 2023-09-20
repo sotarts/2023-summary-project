@@ -1,4 +1,5 @@
 import json
+import random
 from typing import Optional
 
 
@@ -252,6 +253,9 @@ def get_healthitem(name: str) -> Optional["HealthItem"]:
             return item
     return None
 
+def get_random_healthitem() -> "HealthItem":
+    return random.choice(healthitems)
+
 def get_keyitem(name: str) -> Optional["KeyItem"]:
     for item in keyitems:
         if item.name == name:
@@ -288,6 +292,9 @@ def get_room(name: str) -> Optional["Room"]:
         if room.name == name:
             return room
     return None
+
+def get_rooms() -> list[Room]:
+    return rooms.copy()
 
 
 class Action:
