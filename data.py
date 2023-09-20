@@ -149,12 +149,12 @@ def get_weapon(name: str) -> "Weapon" | None:
 class Monster:
 
     def __init__(self, name: str, description: str, health: int, ap: int,
-                 item: list, slot: int):
+                 items: list[str], slot: int):
         self.name = name
         self.health = health
         self.ap = ap
         self.description = description
-        self.item = item
+        self.items = items
         self.slot = slot
 
     def update_health(self, value: int) -> None:
@@ -165,15 +165,9 @@ class Monster:
 
     @classmethod
     def from_dict(cls, record: dict) -> "Monster":
-        items = []
-        if "item" in record:
-            for item in record["item"]:
-                for value in allitems:
-                    if value.name == item:
-                        items.append(value)
-        object = cls(record["name"], record["description"], record["health"],
-                     record["ap"], items, record["slot"])
-        return object
+        assert "items" in record, f"Error: {record['name']} does not have items"
+        return cls(record["name"], record["description"], record["health"],
+                     record["ap"], record["items"], record["slot"])
 
 
 monsters = []
@@ -184,10 +178,11 @@ with open("creatures.json", "r") as m:
         monsters.append(monster)
 
 
-def get_monster(name: str) -> "Monster":
+def get_monster(name: str) -> "Monster" | None:
     for monster in monsters:
         if monster.name == name:
             return monster
+    return None
 
 
 class Room:

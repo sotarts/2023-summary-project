@@ -164,20 +164,20 @@ class Game:
 
     def pickup_loot(self, monster: object) -> None:
         """Check if monster have loot and add it to the respective inventories"""
-        if not monster.item:
+        if not monster.items:
             return
-        for i in range(len(monster.item)):
-            if monster.item[i].category == "health_item":
-                self.player.healthitems.add(monster.item[i])
+        for i in range(len(monster.items)):
+            if monster.items[i].category == "health_item":
+                self.player.healthitems.add(monster.items[i])
                 
-            elif monster.item[i].category == "key_item":
-                self.player.keyitems.add(monster.item[i])
+            elif monster.items[i].category == "key_item":
+                self.player.keyitems.add(monster.items[i])
 
-            elif monster.item[i].category == "weapons":
-                self.player.weapons.add(monster.item[i])
+            elif monster.items[i].category == "weapons":
+                self.player.weapons.add(monster.items[i])
                 
-            print(f"+{self.current_room.monster.item[i].name} added to your inventory!")
-            self.display_status(monster.item[i])
+            print(f"+{self.current_room.monster.items[i].name} added to your inventory!")
+            self.display_status(monster.items[i])
 
     def show_layout(self, slot: int)-> None:
         """Prints the attacking layout"""
