@@ -2,9 +2,10 @@
 #Test attack monster works (game ends when you die)
 #Test monster drop works
 
-import data
 import random
 
+import action
+import data
 import text
 
 
@@ -245,14 +246,14 @@ class Game:
     def get_possible_actions(self) -> list[str]:
         """Returns a list of possible actions"""
         if self.current_room == data.get_room(BOSS_ROOM):
-            return [data.EXPLORE, data.GOTO_ROOM, data.USE_ITEM]
+            return [action.EXPLORE, action.GOTO_ROOM, action.USE_ITEM]
         if not self.current_room.is_fully_visited():
-            return [data.EXPLORE, data.GOTO_ROOM, data.USE_ITEM]
+            return [action.EXPLORE, action.GOTO_ROOM, action.USE_ITEM]
         monster = data.get_monster(self.current_room.monster)
         if monster and not monster.is_dead():
             print(monster.status())
-            return [data.ATTACK, data.USE_ITEM]
-        return [data.EXPLORE, data.GOTO_ROOM, data.USE_ITEM]
+            return [action.ATTACK, action.USE_ITEM]
+        return [action.EXPLORE, action.GOTO_ROOM, action.USE_ITEM]
 
     def get_randomised_loot(self) -> Optional[data.Item]:
         """Determines the chance of returning a random health item"""
@@ -274,7 +275,7 @@ class Game:
 
     def execute_action(self, action: str) -> None:
         """Execute chosen action"""
-        if action == data.EXPLORE:
+        if action == action.EXPLORE:
             #Prints description of explore, randomise loot, and increments ec
             print(self.current_room.status())
             loot = self.get_randomised_loot()
@@ -283,16 +284,16 @@ class Game:
                 self.player.healthitems.add(loot)
             self.current_room.visit()
 
-        elif action == data.GOTO_ROOM:
+        elif action == action.GOTO_ROOM:
             #change room and print room status
             self.move_to_room()
             print(self.current_room.status())
             self.current_room.visit()
 
-        elif action == data.USE_ITEM:
+        elif action == action.USE_ITEM:
             self.use_item()
 
-        elif action == data.ATTACK:
+        elif action == action.ATTACK:
             self.attack()
 
     def run(self) -> None:

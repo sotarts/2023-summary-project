@@ -289,9 +289,3 @@ def get_room(name: str) -> "Room":
 
 def room_names() -> list[str]:
     return list(rooms.keys())
-
-
-EXPLORE = "Explore"
-GOTO_ROOM = "Go To"
-USE_ITEM = "Use Item"
-ATTACK = "Attack"
