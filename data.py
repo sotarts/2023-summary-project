@@ -38,6 +38,9 @@ class Player:
     def is_dead(self) -> bool:
         return self.health <= 0
 
+    def status(self) -> str:
+        return f"HEALTH: {self.get_health()}"
+
     def update_health(self, value: int) -> None:
         self.health += value
 
@@ -75,6 +78,14 @@ class Weapon(Item):
         super().__init__(name, description, category)
         self.ap = damage
 
+    def status(self) -> str:
+        result = ("-" * 5) + self.name + "'s Status" + ("-" * 5)
+        result += "\n"
+        result += f"DESCRIPTION: {self.description}"
+        result += "\n"
+        result += "ATTACK BUFF: +{self.ap}"
+        return result
+
     @classmethod
     def from_dict(cls, record: dict) -> "Weapon":
         object = cls(record["name"], record["description"], record["damage"],
@@ -87,6 +98,14 @@ class KeyItem(Item):
     def __init__(self, name, description, usage, category):
         super().__init__(name, description, category)
         self.usage = usage
+
+    def status(self) -> str:
+        result = ("-" * 5) + self.name + "'s Status" + ("-" * 5)
+        result += "\n"
+        result += f"DESCRIPTION: {self.description}"
+        result += "\n"
+        result += f"USAGE:{self.usage}"
+        return result
 
     @classmethod
     def from_dict(cls, record: dict) -> "KeyItem":
@@ -101,6 +120,14 @@ class HealthItem(Item):
         super().__init__(name, description, category)
         self.health = health
 
+    def status(self) -> str:
+        result = ("-" * 5) + self.name + "'s Status" + ("-" * 5)
+        result += "\n"
+        result += f"DESCRIPTION: {self.description}"
+        result += "\n"
+        result += f"HEALTH:{self.health}"
+        return result
+    
     @classmethod
     def from_dict(cls, record: dict) -> "HealthItem":
         object = cls(record["name"], record["description"], record["healing"],
@@ -121,6 +148,12 @@ class Monster:
 
     def is_dead(self) -> bool:
         return self.health <= 0
+
+    def status(self) -> str:
+        result = f"You found the {self.name}!"
+        result += "\n"
+        result += f"DESCRIPTION: {self.description}"
+        return result
 
     def update_health(self, value: int) -> None:
         self.health += value
@@ -148,6 +181,17 @@ class Room:
         self.monster = monster
         self.max_visits = max_visits
         self.visit_count = visit_count
+
+    def description(self) -> str:
+        if self.is_fully_visited():
+            return "There is nothing left to explore."
+        return self.descriptions[self.visit_count]
+
+    def status(self) -> str:
+        result = "-----EXPLORED RESULTS-----"
+        result += "\n"
+        result += self.description()
+        return result
 
     def visit(self):
         self.visit_count += 1

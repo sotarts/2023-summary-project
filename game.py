@@ -21,35 +21,23 @@ class Game:
         if not obj:
             return
         if isinstance(obj, data.Player):
-            print(f"HEALTH: {self.player.get_health()}\nCURRENT ROOM: {self.current_room.name}")
+            print(obj.status)
+            print(f"CURRENT ROOM: {self.current_room.name}")
 
         elif isinstance(obj, data.Room):
-            if incremented_desc:
-                print("-----EXPLORED RESULTS-----")
-                if not obj.is_fully_visited():
-                    print(obj.description[obj.visit_count])
-                    print("")
-                    pass
-                else:
-                    print("There is nothing left to explore.\n")
-            else:
-                print(("-"*5) + obj.name + ("-"*5) )
-                print(f"DESCRIPTION: {obj.description}")
+            print(obj.status())
 
         elif isinstance(obj, data.Monster):
-            print(f"\nYou found the {obj.name}!\nDESCRIPTION: {obj.description}\n")
+            print(obj.status())
 
         elif isinstance(obj, data.Weapon):
-            print(("-"*5) + obj.name + "'s Status" + ("-"*5) )
-            print(f"DESCRIPTION: {obj.description}\nATTACK BUFF: +{obj.ap}")
+            print(obj.status())
 
         elif obj.category == "key_item":
-            print(("-"*5) + obj.name + "'s Status" + ("-"*5) )
-            print(f"DESCRIPTION: {obj.description}\nUSAGE:{obj.usage}")
+            print(obj.status())
 
         elif obj.category == "health_item":
-            print(("-"*5) + obj.name + "'s Status" + ("-"*5) )
-            print(f"DESCRIPTION: {obj.description}\nHEALTH:{obj.health}")
+            print(obj.status())
 
     def check_gameover(self) -> None:
         """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
@@ -164,22 +152,23 @@ class Game:
             else:
                 print("The Final Boss is not near.......")
 
-    def pickup_loot(self, monster: object) -> None:
+    def pickup_loot(self, monster: data.Monster) -> None:
         """Check if monster have loot and add it to the respective inventories"""
         if not monster.items:
             return
-        for i in range(len(monster.items)):
-            if monster.items[i].category == "health_item":
-                self.player.healthitems.add(monster.items[i])
-                
-            elif monster.items[i].category == "key_item":
-                self.player.keyitems.add(monster.items[i])
-
-            elif monster.items[i].category == "weapons":
-                self.player.weapons.add(monster.items[i])
-                
-            print(f"+{monster.items[i].name} added to your inventory!")
-            self.display_status(monster.items[i])
+        for item_name in monster.items:
+            item = data.get_item(item_name)
+            if isinstance(item, data.HealthItem):
+                self.player.healthitems.add(item)
+            elif isinstance(item, data.KeyItem):
+                self.player.keyitems.add(item)
+            elif isinstance(item, data.Weapon):
+                self.player.weapons.add(item)
+            else:
+                print(f"{item_name} not found, please report this error.")
+                return
+            print(f"+{item} added to your inventory!")
+            self.display_status(item)
 
     def show_layout(self, slot: int)-> None:
         """Prints the attacking layout"""
