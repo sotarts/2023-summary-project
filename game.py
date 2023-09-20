@@ -231,14 +231,14 @@ class Game:
         """Execute chosen action"""
         if action == data.EXPLORE:
             #Prints description of explore, randomise loot, and increments ec
-            self.display_status(self.current_room, True)
+            self.display_status(self.current_room)
             self.display_status(self.get_randomised_loot())
             self.current_room.visit()
 
         elif action == data.GOTO_ROOM:
             #change room and print room status
             self.move_to_room()
-            self.display_status(self.current_room, True)
+            self.display_status(self.current_room)
             self.current_room.visit()
 
         elif action == data.USE_ITEM:
