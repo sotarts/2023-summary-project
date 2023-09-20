@@ -127,38 +127,53 @@ class Game:
         """Update player's location to given room."""
         self.current_room = data.get_room(room_name)
 
-    def enter_combat(self, player: data.Player, monster: data.Monster) -> None:
-        """WHOLE ATTACKING SEQUENCE, attacks monster in current room. """
-        #---ATTACK LOOP---
-        monster = data.get_monster(self.current_room.monster)
-        while monster and not self.player.is_dead():
-            self.show_layout(monster.slot)
-            dodge_slot = prompt_valid_choice(
-                generate_numbers(2),
-                text.prompt_dodge,
-                False
-            )
-            attack_slots = generate_numbers(monster.slot)
-
-            attack_slot = prompt_valid_choice(
-                attack_slots, text.prompt_square,
-                False)
-            # Suggestion: don't prompt for weapon if there is only one choice
-            choice = prompt_valid_choice(self.player.weapons.contents(),
+    @staticmethod
+    def prompt_attack(player: data.Player, monster: data.Monster) -> Tuple[int, str]:
+        """Prompt player for a position to attack, and a weapon to attack with.
+        Return player's choices.
+        """
+        attack_slots = generate_numbers(monster.slot)
+        attack_slot = prompt_valid_choice(
+            attack_slots,
+            text.prompt_square,
+            False
+        )
+        # Suggestion: don't prompt for weapon if there is only one choice
+        weapon_choice = prompt_valid_choice(player.weapons.contents(),
                                  text.prompt_weapon)
-            chosen_weapon = self.player.weapons.get(choice)
+        return attack_slot, weapon_choice
+
+    @staticmethod
+    def prompt_dodge(player: data.Player, monster: data.Monster) -> int:
+        """Prompt player for a position to dodge to.
+        Return player's choice.
+        """
+        dodge_slot = prompt_valid_choice(
+            generate_numbers(2),
+            text.prompt_dodge,
+            False
+        )
+
+    def enter_combat(self, player: data.Player, monster: data.Monster) -> None:
+        """WHOLE COMBAT SEQUENCE"""
+        #---COMBAT LOOP---
+        while not player.is_dead():
+            self.show_layout(monster.slot)
+            attack_slot, weapon_choice = self.prompt_attack(player, monster)
+            weapon = player.weapons.get(weapon_choice)
 
             print(text.header("BATTLE RESULT", width=23))
             if dice_check(sides=monster.slot, target=attack_slot):
-                dmg = self.player.ap * chosen_weapon.ap
+                dmg = player.ap * weapon.ap
                 monster.take_damage(dmg)
                 print(text.attack_success(dmg))
             else:
                 print(text.attack_fail)
 
             if not monster.is_dead():
+                dodge_slot = self.prompt_dodge(player, monster)
                 if dice_check(sides=4, target=dodge_slot):
-                    self.player.take_damage(monster.ap)
+                    player.take_damage(monster.ap)
                     print(text.dodge_fail(monster.ap))
                 else:
                     print(text.dodge_success)
@@ -166,9 +181,7 @@ class Game:
             else:
                 print(text.monster_killed)
                 print()
-                print(text.header("SPOILS", width=16))
-                self.pickup_loot(monster)
-                monster = None
+                return
 
     def prompt_item(self) -> str | None:
         """Prompt player to choose an item to use.
@@ -227,14 +240,15 @@ class Game:
             else:
                 print(text.no_boss_encounter)
 
-    def pickup_loot(self, monster: data.Monster) -> None:
+    def pickup_loot(self, player: data.Player, monster: data.Monster) -> None:
         """Check if monster have loot and add it to the respective inventories"""
         if not monster.items:
             return
+        print(text.header("SPOILS", width=16))
         for item_name in monster.items:
             item = data.get_item(item_name)
             if item:
-                self.player.take(item)
+                player.take(item)
             else:
                 print(text.item_error(item_name))
                 continue
@@ -317,6 +331,10 @@ class Game:
              data.get_monster(self.current_room.monster)
             assert monster is not None, f"It should not have been possible to choose {choice} without a monster. Please report this error."
             self.enter_combat(self.player, monster)
+            if self.player.is_dead():
+                return
+            if monster.is_dead():
+                self.pickup_loot(self.player, monster)
 
     def run(self) -> None:
         """Run the game loop"""
