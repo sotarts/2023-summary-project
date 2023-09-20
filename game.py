@@ -40,7 +40,7 @@ class Game:
     """Encapsulates the main game"""
 
     def __init__(self) -> None:
-        self.player = data.Player()
+        self.player = data.Player(health=100, ap=5)
         self.gameover = False
         self.current_room = data.get_room(START_ROOM)
         assert self.current_room is not None, "Start room could not be found"
@@ -57,11 +57,11 @@ class Game:
                 print(text.loseothers())
             self.gameover = True
 
-        elif data.get_monster(BOSS_NAME).get_health() <= 0:
-            print(text.win())
-            self.gameover = True
         else:
-            pass
+            boss = data.get_monster(BOSS_NAME)
+            if boss.is_dead():
+                print(text.win())
+                self.gameover = True
 
     def move_to_room(self) -> None:
         """Prompts room and update current room based on input of the player"""
@@ -95,14 +95,14 @@ class Game:
             if attack_slot == random.randint(
                     1, monster.slot):  #change b to max slot of monster
                 dmg = self.player.ap * chosen_weapon.ap
-                monster.update_health(-dmg)
+                monster.take_damage(dmg)
                 print(text.attack_success(dmg))
             else:
                 print(text.attack_fail)
 
-            if monster.get_health() > 0:
+            if not monster.is_dead():
                 if random.randint(1, 4) == dodge_slot:
-                    self.player.update_health(monster.ap * -1)
+                    self.player.take_damage(monster.ap)
                     print(text.dodge_fail(monster.ap))
                 else:
                     print(text.dodge_success)
@@ -138,7 +138,7 @@ class Game:
     def use_healthitem(self, healthitem: data.HealthItem) -> None:
         """Updates the player health using the chosen item"""
         self.player.healthitems.remove(healthitem.name)
-        self.player.update_health(healthitem.health)
+        self.player.heal(healthitem.health)
         print(text.use_item(healthitem.name, f"healed {healthitem.health} HP"))
 
     def use_keyitem(self, keyitem: data.KeyItem) -> None:
@@ -184,7 +184,7 @@ class Game:
         spacer = ((slot * 2 + 1 - 7) // 2) * " "
         print()
         print(text.header("ATTACKING", width=29))
-        print(f"{monster.name} HP: {monster.get_health()}")
+        print(f"{monster.name} HP: {monster.health}")
         print("\t\t" + "_" * (slot * 2 + 1))
         print(f"\t\t|{divider * slot}")
         print("\t\t" + " " + " ".join([str(i) for i in range(1, slot + 1)]))
@@ -192,7 +192,7 @@ class Game:
         print("\t\t" + spacer + ("_" * (5)))
         print("\t\t" + spacer + f"|{divider * 2}")
         print("\t\t" + spacer + " " + " ".join([str(i) for i in range(1, 3)]))
-        print(f"Your HP: {self.player.get_health()}")
+        print(f"Your HP: {self.player.health}")
         print("-" * 30 + "\n")
 
     def get_possible_actions(self) -> list[str]:

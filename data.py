@@ -3,23 +3,55 @@ import random
 from typing import Optional
 
 
-class Player:
+class Combatant:
+    """Combatants can take damage in battle, and die.
 
-    def __init__(self):
-        self.health = 100
-        self.ap = 5
-        self.weapons = Inventory("weapons")
-        self.keyitems = Inventory("keyitems")
-        self.healthitems = Inventory("health")
+    Attributes
+    ----------
+    + health: int
+    + ap: int
+
+    Methods
+    -------
+    + is_dead() -> bool
+    + heal(amt: int) -> None
+    + take_damage(dmg: int) -> None
+    """
+    def __init__(self, health: int, ap: int):
+        self.health = health
+        self.ap = ap
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(health={self.health}, ap={self.ap})"
 
     def is_dead(self) -> bool:
         return self.health <= 0
 
-    def status(self) -> str:
-        return f"HEALTH: {self.get_health()}"
+    def heal(self, amt: int) -> None:
+        assert amt >= 0
+        self.health += amt
 
-    def update_health(self, value: int) -> None:
-        self.health += value
+    def status(self) -> str:
+        """All subclasses must implement this method"""
+        raise NotImplementedError(
+            f"{self.__class__.__name__} did not implement status()"
+        )
+
+    def take_damage(self, dmg: int) -> None:
+        assert dmg >= 0
+        self.health -= dmg
+
+
+class Player(Combatant):
+
+    def __init__(self, health: int, ap: int):
+        super().__init__(health, ap)
+        self.weapons = Inventory("weapons")
+        self.keyitems = Inventory("keyitems")
+        self.healthitems = Inventory("health")
+
+    def status(self) -> str:
+        return f"HEALTH: {self.health}"
 
     def get_health(self) -> int:
         return self.health
@@ -129,28 +161,21 @@ class HealthItem(Item):
         return object
 
 
-class Monster:
+class Monster(Combatant):
 
     def __init__(self, name: str, description: str, health: int, ap: int,
                  items: list[str], slot: int):
+        super().__init__(health, ap)
         self.name = name
-        self.health = health
-        self.ap = ap
         self.description = description
         self.items = items
         self.slot = slot
-
-    def is_dead(self) -> bool:
-        return self.health <= 0
 
     def status(self) -> str:
         result = f"You found the {self.name}!"
         result += "\n"
         result += f"DESCRIPTION: {self.description}"
         return result
-
-    def update_health(self, value: int) -> None:
-        self.health += value
 
     def get_health(self) -> int:
         return self.health
