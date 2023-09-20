@@ -1,7 +1,7 @@
 [
     {
-    "name": "Overgrown Sheltered Courts",
-    "description": "Stepping outside, you find yourself in the overgrown basketball courts swallowed by nature. Tall grasses and vines obscure the cracked pavement. The skeletal remains of the basketball hoop creak in the breeze. A sense of desolation hangs in the air.",
+        "name": "Overgrown Sheltered Courts",
+        "description": "Stepping outside, you find yourself in the overgrown basketball courts swallowed by nature. Tall grasses and vines obscure the cracked pavement. The skeletal remains of the basketball hoop creak in the breeze. A sense of desolation hangs in the air.",
         "description2": "Turning a corner, you stumble upon the entrance to what must have been the sheltered court, a place now cloaked in the embrace of nature's reclamation. Intricate patterns of sunlight filtered through the intertwined branches and overgrown leaves that had taken root above, casting a mottled carpet of light and shadow on the cracked pavement beneath your feet.",
         "description3": "As you tread deeper into the heart of this overgrown court, a sense of awe and reverence envelops you. The silence here is profound, save for the occasional rustle of leaves or the distant caw of a bird. Nature's palette has painted the walls with shades of green and bursts of vibrant flowers, a stark contrast to the muted tones of decay that surround you elsewhere in this post-apocalyptic world. You have completely explored the Overgrown Sheltered Courts, you should now proceed forward to another room.",
         "description4": "You trod around and chance upon basketball, miraculously intact albeit a bit deflated. You shoot for 3.....\nyou miss.",
@@ -46,7 +46,7 @@
         "description5": "You tread lightly over debris strewn across the linoleum floor, your footsteps echoing in the eerie silence. The air is heavy with the scent of aged paper and decay, an unsettling blend that makes your heart race. The room's walls are adorned with faded educational posters, their once vibrant colors now muted by time. meow meow meow",
         "description6": "Your eyes scan the room, seeking any sign of the elusive final boss. A flickering fluorescent light above casts intermittent shadows, playing tricks on your perception. In one corner, a broken coffee machine stands as a relic of more ordinary times, while a toppled bookshelf leans against a wall, its contents of forgotten lesson plans and textbooks scattered haphazardly. MEOW MEOW MEOW MEOW MEOW",
         "description7": "The cat in your bag is literally having a seizure. ",
-         "monster": "Final Boss",
+        "monster": "Final Boss",
         "max_explored": 7
     }
 ]

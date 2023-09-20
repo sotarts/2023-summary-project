@@ -4,7 +4,9 @@
         "description": "Just a common bird that has now gained super-bird powers. However, it is now covered in writhing maggots that feast on its decaying flesh. Its wings are tattered, and its movements are sluggish.",
         "health": 61,
         "ap": 5,
-        "item": ["Mutated lighter"],
+        "item": [
+            "Mutated lighter"
+        ],
         "slot": 2
     },
     {
@@ -12,7 +14,10 @@
         "description": "A monstrous cockroach of unnatural size, its chitinous exoskeleton gleams in the dim light. Its legs scuttle with an eerie quickness, leaving a trail of poisionous filth.",
         "health": 80,
         "ap": 10,
-        "item": ["Cat", "Rusty Metal Pole"],
+        "item": [
+            "Cat",
+            "Rusty Metal Pole"
+        ],
         "slot": 3
     },
     {
@@ -20,7 +25,10 @@
         "description": "A mutated bookworm that has grown to an alarming size. Its body is covered in tiny, wriggling tendrils, and it hungers for the taste of knowledge and flesh alike.",
         "health": 100,
         "ap": 15,
-        "item": ["Old Staff Key Card", "Chemical Thrower"],
+        "item": [
+            "Old Staff Key Card",
+            "Chemical Thrower"
+        ],
         "slot": 4
     },
     {
@@ -30,5 +38,4 @@
         "ap": 30,
         "slot": 6
     }
-  ]
-
+]
