@@ -210,7 +210,7 @@ class Game:
             return copy_list
         else:
             monster = data.get_monster(self.current_room.monster)
-            if not monster.is_dead():
+            if monster and not monster.is_dead():
                 self.display_status(monster)
                 copy_list.remove(data.EXPLORE)
                 copy_list.remove(data.GOTO_ROOM)
