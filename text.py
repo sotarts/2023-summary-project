@@ -29,7 +29,7 @@ prompt_use_type = "WHICH TYPE OF OBJECT DO YOU WANT TO USE?"
 prompt_use_item = "WHICH OBJECT DO YOU WANT TO USE?"
 
 def attack_success(dmg: int) -> str:
-    return f"You guessed correctly and dealt {self.player.ap * chosen_weapon.ap} damage!"
+    return f"You guessed correctly and dealt {dmg} damage!"
 attack_fail = "Oops, your attack missed the monster.."
 
 dodge_success = "You managed to dodge the monsters attack successfully!"

@@ -3,6 +3,7 @@
 #Test monster drop works
 
 import random
+from typing import Optional
 
 import action
 import data
@@ -16,17 +17,17 @@ def prompt_valid_choice(options: list[str], question: str, show=True) -> str:
         for i, option in enumerate(options, start=1):
             print(f"{i}: {option}")
 
-    userinput = None
-    while not userinput:
-        userinput = input(f"{question} (SELECT A NUMBER): ").strip()
-        if userinput in options:
+    choice = None
+    while not choice:
+        choice = input(f"{question} (SELECT A NUMBER): ").strip()
+        if choice.isdecimal() and 1 <= int(choice) <= len(options):
             break
         else:
-            userinput = None
+            choice = None
             print(text.input_invalid)
             print()
     print("")
-    return userinput
+    return options[int(choice) - 1]
 
 
 # Combat helpers
@@ -34,7 +35,7 @@ def prompt_valid_choice(options: list[str], question: str, show=True) -> str:
 def generate_numbers(last: int) -> list[int]:
     """Return a list of numbers from 1 to last"""
     assert last > 0
-    return list(range(1, last))
+    return list(range(1, last + 1))
 
 def dice_roll(sides: int, chance: int) -> bool:
     """Simulate a dice roll for success.
@@ -137,7 +138,7 @@ class Game:
                 text.prompt_dodge,
                 False
             )
-            attack_slots = generate_numbers(monster.slot + 1)
+            attack_slots = generate_numbers(monster.slot)
 
             attack_slot = prompt_valid_choice(
                 attack_slots, text.prompt_square,
@@ -155,7 +156,7 @@ class Game:
                 print(text.attack_fail)
 
             if not monster.is_dead():
-                if dice_check(sides=4, target=dodge):
+                if dice_check(sides=4, target=dodge_slot):
                     self.player.take_damage(monster.ap)
                     print(text.dodge_fail(monster.ap))
                 else:
@@ -201,7 +202,7 @@ class Game:
 
     def use_healthitem(self, item_name: str) -> None:
         """Updates the player health using the chosen item"""
-         item = self.player.healthitems.get(item_name)
+        item = self.player.healthitems.get(item_name)
         self.player.healthitems.remove(item.name)
         self.player.heal(item.health)
         print(text.use_item(item.name, f"healed {item.health} HP"))
@@ -277,19 +278,19 @@ class Game:
                 found_item = data.get_random_healthitem()
 
         elif self.current_room.visit_count <= 4:
-            if dice_roll(sides=4, chance=1:
+            if dice_roll(sides=4, chance=1):
                 found_item = data.get_random_healthitem()
 
         else:
-            if dice_roll(sides=4, chance=1:
+            if dice_roll(sides=4, chance=1):
                 found_item = data.get_random_healthitem()
         if found_item:
-            print(text.found_item(found_item.name)
+            print(text.found_item(found_item.name))
         return found_item
 
-    def execute_action(self, action: str) -> None:
+    def execute_action(self, choice: str) -> None:
         """Execute chosen action"""
-        if action == action.EXPLORE:
+        if choice == action.EXPLORE:
             #Prints description of explore, randomise loot, and increments ec
             print(self.current_room.status())
             loot = self.get_randomised_loot()
@@ -298,19 +299,19 @@ class Game:
                 self.player.healthitems.add(loot)
             self.current_room.visit()
 
-        elif action == action.GOTO_ROOM:
+        elif choice == action.GOTO_ROOM:
             #change room and print room status
             room_name = self.prompt_room()
             self.goto_room(room_name)
             print(self.current_room.status())
             self.current_room.visit()
 
-        elif action == action.USE_ITEM:
-            choice = self.prompt_item()
-            if choice:
-                self.use_item(choice)
+        elif choice == action.USE_ITEM:
+            item = self.prompt_item()
+            if item:
+                self.use_item(item)
 
-        elif action == action.ATTACK:
+        elif choice == action.ATTACK:
             self.attack()
 
     def run(self) -> None:

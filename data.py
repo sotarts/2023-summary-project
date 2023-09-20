@@ -90,7 +90,7 @@ class Inventory:
     def get(self, name: str):
         for item in self._contents:
             if item.name == name:
-                return name
+                return item
 
     def is_empty(self) -> bool:
         return self.count() == 0
@@ -225,7 +225,7 @@ class Room:
         self.visit_count += 1
 
     def is_fully_visited(self) -> bool:
-        return self.visit_count < self.max_visits
+        return self.visit_count >= self.max_visits
 
     def add_item(self) -> None:
         print("Sorry you can't do that")
@@ -296,8 +296,8 @@ def get_item(name: str) -> "Item":
         return get_weapon(name)
     raise KeyError(f"{name}: No such item")
 
-def get_monster(name: str) -> "Monster":
-    return monsters[name]
+def get_monster(name: str) -> Optional["Monster"]:
+    return monsters.get(name, None)
 
 def get_room(name: str) -> "Room":
     return rooms[name]
