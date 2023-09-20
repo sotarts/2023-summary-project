@@ -113,11 +113,17 @@ class Game:
             return True
         return False
 
-    def move_to_room(self) -> None:
-        """Prompts room and update current room based on input of the player"""
+    def prompt_room(self) -> str:
+        """Prompts player to pick a room to visit.
+        Return player's choice.
+        """
         room_names = data.room_names()
         room_names.remove(BOSS_ROOM)
         room_name = prompt_valid_choice(room_names, text.prompt_room)
+        return room_name
+
+    def goto_room(self, room_name: str) -> None:
+        """Update player's location to given room."""
         self.current_room = data.get_room(room_name)
 
     def attack(self) -> None:
@@ -162,43 +168,55 @@ class Game:
                 self.pickup_loot(monster)
                 monster = None
 
-    def use_item(self) -> None:
+    def prompt_item(self) -> str | None:
+        """Prompt player to choose an item to use.
+        Return item name.
+        """
         item_type = prompt_valid_choice(["Health Items", "Key Items"],
                                 text.prompt_use_type)
         if item_type == "Health Items":
             if self.player.healthitems.is_empty():
                 print(text.items_empty("health items"))
-                return
+                return None
             choice = prompt_valid_choice(self.player.healthitems.contents(),
                                  text.prompt_use_item)
-            healthitem = self.player.healthitems.get(choice)
-            self.use_healthitem(healthitem)
+            return choice
 
         elif item_type == "Key Items":
             if self.player.keyitems.is_empty():
                 print(text.items_empty("key items"))
-                return
+                return None
             choice = prompt_valid_choice(self.player.keyitems.contents(),
                                  text.prompt_use_item)
-            keyitem = self.player.keyitems.get(choice)
-            self.use_keyitem(keyitem)
+            return choice
+        raise ValueError(f"Error: invalid choice {item_type}")
 
-    def use_healthitem(self, healthitem: data.HealthItem) -> None:
+    def use_item(self, item_name: str) -> None:
+        """Use the given item"""
+        if item_name in self.player.healthitems.contents():
+            self.use_healthitem(item_name)
+        elif item_name in self.player.keyitems.contents():
+            self.use_keyitem(item_name)
+        raise ValueError(f"{item_name}: Not a valid item in player's inventory")
+
+    def use_healthitem(self, item_name: str) -> None:
         """Updates the player health using the chosen item"""
-        self.player.healthitems.remove(healthitem.name)
-        self.player.heal(healthitem.health)
-        print(text.use_item(healthitem.name, f"healed {healthitem.health} HP"))
+         item = self.player.healthitems.get(item_name)
+        self.player.healthitems.remove(item.name)
+        self.player.heal(item.health)
+        print(text.use_item(item.name, f"healed {item.health} HP"))
 
-    def use_keyitem(self, keyitem: data.KeyItem) -> None:
+    def use_keyitem(self, item_name: str) -> None:
         """Takes in the keyitem chosen and use it if possible"""
-        if keyitem.name == GATE_KEY:
-            if self.current_room == data.get_room(GATE_ROOM).name:
-                self.current_room = data.get_room(BOSS_ROOM)
+        item = self.player.keyitems.get(item_name)
+        if item.name == GATE_KEY:
+            if self.current_room == data.get_room(GATE_ROOM):
+                self.goto_room(BOSS_ROOM)
                 print(text.use_boss_key)
             else:
                 print(text.use_wrong_key)
 
-        if keyitem.name == BOSS_KEY:
+        if item.name == BOSS_KEY:
             if self.current_room == data.get_room(BOSS_ROOM):
                 print(text.boss_encounter)
                 boss = data.get_monster(BOSS_NAME)
@@ -286,12 +304,15 @@ class Game:
 
         elif action == action.GOTO_ROOM:
             #change room and print room status
-            self.move_to_room()
+            room_name = self.prompt_room()
+            self.goto_room(room_name)
             print(self.current_room.status())
             self.current_room.visit()
 
         elif action == action.USE_ITEM:
-            self.use_item()
+            choice = self.prompt_item()
+            if choice:
+                self.use_item(choice)
 
         elif action == action.ATTACK:
             self.attack()
