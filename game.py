@@ -207,7 +207,7 @@ class Game:
             copy_list.remove(data.ATTACK)
             return copy_list
         else:
-            if self.current_room.get_monster() != False:
+            if self.current_room.monster != False:
                 self.display_status(self.current_room.monster)
                 copy_list.remove(data.EXPLORE)
                 copy_list.remove(data.GOTO_ROOM)
