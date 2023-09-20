@@ -115,7 +115,7 @@ class Game:
             if self.player.keyitems.is_empty():
                 print("You do not have any Key items")
                 return
-            choice = self.prompt(self.player.keyitems.contents(),"WHICH OBJECT DO YOU WANT TO USE?")
+            choice = self.prompt(self.player.keyitems.contents(),"WHICH OBJECT DO YOU WANT TO USE?", False)
             keyitem = self.player.keyitems.get(choice)
             self.use_keyitem(keyitem)
 
@@ -177,26 +177,26 @@ class Game:
         print(f"Your HP: {self.player.get_health()}")
         print("-"*30+"\n")
 
-    def get_possible_actions(self) -> list[data.Action]:
+    def get_possible_actions(self) -> list[str]:
         """Returns a list of possible Action objects"""
-        copy_list = data.actionslist().copy()
+        actions = data.get_actions()
         if self.current_room == data.get_room("Abandoned Staff Room"):
-            copy_list.remove(data.ATTACK)
-            return copy_list
+            actions.remove(data.ATTACK)
+            return actions
         
         if not self.current_room.is_fully_visited():
-            copy_list.remove(data.ATTACK)
-            return copy_list
+            actions.remove(data.ATTACK)
+            return actions
         else:
             monster = data.get_monster(self.current_room.monster)
             if monster and not monster.is_dead():
                 self.display_status(monster)
-                copy_list.remove(data.EXPLORE)
-                copy_list.remove(data.GOTO_ROOM)
-                return copy_list
+                actions.remove(data.EXPLORE)
+                actions.remove(data.GOTO_ROOM)
+                return actions
             else:
-                copy_list.remove(data.ATTACK)
-                return copy_list
+                actions.remove(data.ATTACK)
+                return actions
     
     def get_randomised_loot(self) -> None:
         """Adds randomised weapon into players inventory"""
@@ -225,10 +225,10 @@ class Game:
                     print(f"You found {found_item.name}!!")
                     return found_item
                     
-    def prompt_valid_actions(self, possible_actions: list[data.Action]) -> data.Action:
+    def prompt_valid_actions(self, possible_actions: list[str]) -> str:
         """Displays possible actions, gets user input and return the action object"""
         #Display and Get user input
-        action = self.prompt(possible_actions, "WHAT DO YOU WANT TO DO?")
+        action = self.prompt(possible_actions, "WHAT DO YOU WANT TO DO?", False)
         #Return Action object
         return action
 

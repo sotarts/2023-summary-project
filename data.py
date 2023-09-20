@@ -303,18 +303,12 @@ def room_names() -> list[str]:
     return list(rooms.keys())
 
 
-class Action:
+EXPLORE = "Explore"
+GOTO_ROOM = "Go To"
+USE_ITEM = "Use Item"
+ATTACK = "Attack"
 
-    def __init__(self, name: str):
-        self.name = name
+_actions = [EXPLORE, GOTO_ROOM, USE_ITEM, ATTACK]
 
-
-EXPLORE = Action("Explore")
-GOTO_ROOM = Action("Go To")
-USE_ITEM = Action("Use Item")
-ATTACK = Action("Attack")
-
-
-def actionslist() -> list[Action]:
-    actionslist = [EXPLORE, GOTO_ROOM, USE_ITEM, ATTACK]
-    return actionslist
+def get_actions() -> list[str]:
+    return _actions.copy()
