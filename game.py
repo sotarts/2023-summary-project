@@ -3,7 +3,7 @@
 #Test monster drop works
 
 import random
-from typing import Optional
+from typing import Optional, Tuple
 
 import action
 import data
@@ -87,7 +87,7 @@ class Game:
     """Encapsulates the main game"""
 
     def __init__(self) -> None:
-        self.player = data.Player(health=100, ap=5)
+        self.player = data.Player(health=100, ap=5, agility=4)
         self.current_room = data.get_room(START_ROOM)
         assert self.current_room is not None, "Start room could not be found"
 
@@ -327,8 +327,7 @@ class Game:
                 self.use_item(item)
 
         elif choice == action.ATTACK:
-            monster =
-             data.get_monster(self.current_room.monster)
+            monster = data.get_monster(self.current_room.monster)
             assert monster is not None, f"It should not have been possible to choose {choice} without a monster. Please report this error."
             self.enter_combat(self.player, monster)
             if self.player.is_dead():

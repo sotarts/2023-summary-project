@@ -19,7 +19,7 @@ class Combatant:
     + heal(amt: int) -> None
     + take_damage(dmg: int) -> None
     """
-    def __init__(self, health: int, ap: int, ability: int):
+    def __init__(self, health: int, ap: int, agility: int):
         self.health = health
         self.ap = ap
         self.agility = agility
@@ -61,13 +61,13 @@ class Player(Combatant):
         Return True if successful, otherwise False.
         """
         if isinstance(item, HealthItem):
-            self.player.healthitems.add(item)
+            self.healthitems.add(item)
             return True
         elif isinstance(item, KeyItem):
-            self.player.keyitems.add(item)
+            self.keyitems.add(item)
             return True
         elif isinstance(item, Weapon):
-            self.player.weapons.add(item)
+            self.weapons.add(item)
             return True
         return False
 
