@@ -6,8 +6,7 @@
             "Turning a corner, you stumble upon the entrance to what must have been the sheltered court, a place now cloaked in the embrace of nature's reclamation. Intricate patterns of sunlight filtered through the intertwined branches and overgrown leaves that had taken root above, casting a mottled carpet of light and shadow on the cracked pavement beneath your feet.",
             "As you tread deeper into the heart of this overgrown court, a sense of awe and reverence envelops you. The silence here is profound, save for the occasional rustle of leaves or the distant caw of a bird. Nature's palette has painted the walls with shades of green and bursts of vibrant flowers, a stark contrast to the muted tones of decay that surround you elsewhere in this post-apocalyptic world. You have completely explored the Overgrown Sheltered Courts, you should now proceed forward to another room.",
             "You trod around and chance upon basketball, miraculously intact albeit a bit deflated. You shoot for 3.....\nyou miss."
-        ],
-        "max_explored": 4
+        ]
     },
     {
         "name": "Ransacked Canteen",
@@ -17,8 +16,7 @@
             "A chill runs down your spine as you imagine the lives that once bustled here, the laughter that echoed off these walls, and the stories that were shared over simple meals. Now, the canteen stands as a haunting testament to the passage of time and the abrupt end of normalcy.",
             "The distant howl of wind underscores the silence that has settled over the canteen. The air is heavy with a mixture of nostalgia and loss. With a final look around, you step back, the weight of the past pressing against your shoulders, and exit the canteen, leaving its memories to the dust and debris. You have now fully explored the canteen and left the room."
         ],
-        "monster": "Maggot-Infested Bird",
-        "max_explored": 4
+        "monster": "Maggot-Infested Bird"
     },
     {
         "name": "Ruined Concourse",
@@ -29,8 +27,7 @@
             "A gust of wind stirs the air, and you catch the faint scent of musty books. You follow the scent, finding yourself in what used to be a library. The shelves, though stripped of their contents, stand as sentinels to the wisdom that once resided within these walls. A chair sits overturned beside a cracked table, as if someone had left in a hurry, leaving their stories and studies behind.",
             "With each step, you immerse yourself deeper into the history that clings to the ruins. You can almost hear the distant echo of youthful laughter and the shuffling of feet, as if the past is whispering its secrets to you. As you end your exploration, the realization sinks in: this place was once a thriving sanctuary of knowledge and community. Now, it stands as a testament to both the fragility of human achievement and the enduring power of nature's reclamation. You have fully explored this room, getting one step closer to obtaining your 'A' level certificate."
         ],
-        "monster": "Abhorrently Large Cockroach",
-        "max_explored": 5
+        "monster": "Abhorrently Large Cockroach"
     },
     {
         "name": "Forgotten Library",
@@ -42,8 +39,7 @@
             "In a corner, you discover a mural on the wall, faded but still discernible. It depicts a vibrant scene of children reading, their faces animated with wonder. The contrast between the mural's depiction of hope and the current state of the library speaks volumes about the passage of time and the resilience of human creativity.",
             "The sound of a distant howl drifts through a broken window, a reminder that the world has changed, evolved into something unrecognizable. But here, in this forgotten library, time holds its breath, preserving a slice of what once was, inviting back memories of you days you spent here mugging for the 'A' levels. You are even more determined to get you 'A' level certificate from the Final Boss. You have completely explored the room."
         ],
-        "monster": "Lingering Bookworm",
-        "max_explored": 6
+        "monster": "Lingering Bookworm"
     },
     {
         "name": "Abandoned Staff Room",
@@ -56,7 +52,6 @@
             "Your eyes scan the room, seeking any sign of the elusive final boss. A flickering fluorescent light above casts intermittent shadows, playing tricks on your perception. In one corner, a broken coffee machine stands as a relic of more ordinary times, while a toppled bookshelf leans against a wall, its contents of forgotten lesson plans and textbooks scattered haphazardly. MEOW MEOW MEOW MEOW MEOW",
             "The cat in your bag is literally having a seizure. "
         ],
-        "monster": "Final Boss",
-        "max_explored": 7
+        "monster": "Final Boss"
     }
 ]

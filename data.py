@@ -220,7 +220,7 @@ class Room:
 
     @classmethod
     def from_dict(cls, record: dict) -> "Room":
-        max_explored = record["max_explored"]
+        max_explored = len(record["descriptions"])
 
         object = cls(record["name"],
                      record["descriptions"],
