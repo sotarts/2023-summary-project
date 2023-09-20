@@ -53,9 +53,6 @@ class Player(Combatant):
     def status(self) -> str:
         return f"HEALTH: {self.health}"
 
-    def get_health(self) -> int:
-        return self.health
-
 
 class Inventory:
 
@@ -176,9 +173,6 @@ class Monster(Combatant):
         result += "\n"
         result += f"DESCRIPTION: {self.description}"
         return result
-
-    def get_health(self) -> int:
-        return self.health
 
     @classmethod
     def from_dict(cls, record: dict) -> "Monster":
