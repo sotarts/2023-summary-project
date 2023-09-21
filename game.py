@@ -11,7 +11,7 @@ import text
 
 
 # Prompt helpers
-def prompt_valid_choice(options: list[str], question: str, show=True) -> str:
+def prompt_valid_choice(options: list, question: str, show=True) -> str:
     """Takes in a list of strs and a question, returns the chosen object"""
     if show:
         for i, option in enumerate(options, start=1):
@@ -140,7 +140,7 @@ class Game:
         # Suggestion: don't prompt for weapon if there is only one choice
         weapon_choice = prompt_valid_choice(player.weapons.contents(),
                                  text.prompt_weapon)
-        return attack_choice, weapon_choice
+        return int(attack_choice), weapon_choice
 
     @staticmethod
     def prompt_dodge(player: data.Player, monster: data.Monster) -> int:
@@ -152,7 +152,7 @@ class Game:
             text.prompt_dodge,
             False
         )
-        return dodge_choice
+        return int(dodge_choice)
 
     def enter_combat(self, player: data.Player, monster: data.Monster) -> None:
         """WHOLE COMBAT SEQUENCE"""
