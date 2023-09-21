@@ -13,7 +13,7 @@ import text
 
 def prompt_valid_choice(options: list,
                         question: str,
-                        show_options=True) -> str:
+                        show_options=True):
     """Takes in a list of strs and a question, returns the chosen object"""
     if show_options:
         for i, option in enumerate(options, start=1):
