@@ -11,7 +11,9 @@ import text
 
 
 # Prompt helpers
-def prompt_valid_choice(options: list, question: str, show=True) -> str:
+def prompt_valid_choice(options: list,
+                        question: str,
+                        show_options=True) -> str:
     """Takes in a list of strs and a question, returns the chosen object"""
     if show:
         for i, option in enumerate(options, start=1):
@@ -32,10 +34,12 @@ def prompt_valid_choice(options: list, question: str, show=True) -> str:
 
 # Combat helpers
 
+
 def generate_numbers(last: int) -> list[int]:
     """Return a list of numbers from 1 to last"""
     assert last > 0
     return list(range(1, last + 1))
+
 
 def dice_roll(sides: int, chance: int) -> bool:
     """Simulate a dice roll for success.
@@ -55,6 +59,7 @@ def dice_roll(sides: int, chance: int) -> bool:
     assert sides > 1
     assert chance <= sides
     return 1 <= random.randint(1, sides) <= chance
+
 
 def dice_check(sides: int, target: int) -> bool:
     """Simulate a dice roll for a target value.
@@ -95,6 +100,7 @@ class Game:
         self.player.weapons.add(data.get_weapon(START_WEAPON))
 
     def end_game(self) -> None:
+        """Display appropriate ending for the game."""
         if self.player.is_dead():
             if self.current_room == data.get_room(BOSS_ROOM):
                 print(text.loseboss())
@@ -106,7 +112,7 @@ class Game:
                 print(text.win())
 
     def gameover(self) -> bool:
-        """Check if game is over, if the player win, win method is called, while if player lose, losing method is called BOTH is asked to restart"""
+        """Check if game is over"""
         if self.player.is_dead():
             return True
         boss = data.get_monster(BOSS_NAME)
@@ -128,18 +134,17 @@ class Game:
         self.current_room = data.get_room(room_name)
 
     @staticmethod
-    def prompt_attack(player: data.Player, monster: data.Monster) -> Tuple[int, str]:
+    def prompt_attack(player: data.Player,
+                      monster: data.Monster) -> Tuple[int, str]:
         """Prompt player for a position to attack, and a weapon to attack with.
         Return player's choices.
         """
-        attack_choice = prompt_valid_choice(
-            generate_numbers(monster.agility),
-            text.prompt_square,
-            False
-        )
+        attack_choice = prompt_valid_choice(generate_numbers(monster.agility),
+                                            text.prompt_square,
+                                            show_options=False)
         # Suggestion: don't prompt for weapon if there is only one choice
         weapon_choice = prompt_valid_choice(player.weapons.contents(),
-                                 text.prompt_weapon)
+                                            text.prompt_weapon)
         return int(attack_choice), weapon_choice
 
     @staticmethod
@@ -147,11 +152,9 @@ class Game:
         """Prompt player for a position to dodge to.
         Return player's choice.
         """
-        dodge_choice = prompt_valid_choice(
-            generate_numbers(player.agility),
-            text.prompt_dodge,
-            False
-        )
+        dodge_choice = prompt_valid_choice(generate_numbers(player.agility),
+                                           text.prompt_dodge,
+                                           show_options=False)
         return int(dodge_choice)
 
     def enter_combat(self, player: data.Player, monster: data.Monster) -> None:
@@ -188,13 +191,13 @@ class Game:
         Return item name.
         """
         item_type = prompt_valid_choice(["Health Items", "Key Items"],
-                                text.prompt_use_type)
+                                        text.prompt_use_type)
         if item_type == "Health Items":
             if self.player.healthitems.is_empty():
                 print(text.items_empty("health items"))
                 return None
             choice = prompt_valid_choice(self.player.healthitems.contents(),
-                                 text.prompt_use_item)
+                                         text.prompt_use_item)
             return choice
 
         elif item_type == "Key Items":
@@ -202,7 +205,7 @@ class Game:
                 print(text.items_empty("key items"))
                 return None
             choice = prompt_valid_choice(self.player.keyitems.contents(),
-                                 text.prompt_use_item)
+                                         text.prompt_use_item)
             return choice
         raise ValueError(f"Error: invalid choice {item_type}")
 
@@ -212,7 +215,8 @@ class Game:
             self.use_healthitem(item_name)
         elif item_name in self.player.keyitems.contents():
             self.use_keyitem(item_name)
-        raise ValueError(f"{item_name}: Not a valid item in player's inventory")
+        raise ValueError(
+            f"{item_name}: Not a valid item in player's inventory")
 
     def use_healthitem(self, item_name: str) -> None:
         """Updates the player health using the chosen item"""
