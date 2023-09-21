@@ -9,13 +9,13 @@ import action
 import data
 import text
 
-
 # Prompt helpers
+
 def prompt_valid_choice(options: list,
                         question: str,
                         show_options=True) -> str:
     """Takes in a list of strs and a question, returns the chosen object"""
-    if show:
+    if show_options:
         for i, option in enumerate(options, start=1):
             print(f"{i}: {option}")
 
@@ -33,7 +33,6 @@ def prompt_valid_choice(options: list,
 
 
 # Combat helpers
-
 
 def generate_numbers(last: int) -> list[int]:
     """Return a list of numbers from 1 to last"""
@@ -78,6 +77,8 @@ def dice_check(sides: int, target: int) -> bool:
     """
     return random.randint(1, sides) == target
 
+
+# Constants
 
 START_ROOM = "Overgrown Sheltered Courts"
 START_WEAPON = "Basketball Shoe"
